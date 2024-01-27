@@ -1,6 +1,7 @@
-import React from 'react'
-import { useState,useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import React, { useContext } from 'react'
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 import {
     Navbar,
     MobileNav,
@@ -29,66 +30,65 @@ import {
     Bars2Icon,
 } from "@heroicons/react/24/solid";
 
+
 const Headers = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false); // Replace with your authentication logic
-    const location = useLocation();
+    const {logout} = useContext(UserContext);
     const navigate = useNavigate();
-    const userInfo = location.state;
-    console.log(userInfo);
+    const user = JSON.parse(localStorage.getItem("userInfo"));
 
     useEffect(() => {
-        if (userInfo && userInfo.userToken) {
+        if (user && user.userToken) {
             setIsAuthenticated(true);
         }
-    }, [userInfo]);
+    }, [user]);
 
     const handleLogout = () => {
-        // Implement logout logic and redirect to the home page
-        localStorage.removeItem("userToken");
+        localStorage.removeItem("userInfo");
+        logout();
         setIsAuthenticated(false);
         navigate('/login');
     };
 
     const renderAuthButtons = () => {
         if (isAuthenticated) {
+            const initials = user.firstName && user.lastName ? user.firstName[0] + user.lastName[0] : user.firstName[0];
             return (
                 <Menu>
                     <MenuHandler>
-                        <Avatar
-                            image={
-                                // Replace with the user's profile image URL
-                                'https://example.com/user-profile-image.jpg'
-                            }
-                            alt="User Profile"
-                            size="sm"
-                        />
+                        <div
+                            className="w-10 h-10 mr-4 flex font-bold items-center justify-center rounded-full shadow-sm shadow-black text-black cursor-pointer hover:bg-blue-600"
+                            style={{ fontSize: '14px',backgroundColor:"#EBF3E8"}}
+                        >
+                            {initials}
+                        </div>
                     </MenuHandler>
-                    <MenuList>
-                        <MenuItem
-                            onClick={() => navigate('/dashboard',{ state: userInfo })}
-                            icon={<CubeTransparentIcon />}
+                    <MenuList className='w-40 h-20 bg-white'>
+                        <MenuItem className='text-sm h-10 font-normal hover:bg-zinc-400 hover:text-white'
+                            onClick={() => navigate('/dashboard')}
+                            icon={<PowerIcon />}
                         >
                             Dashboard
                         </MenuItem>
-                        <MenuItem
+                        <MenuItem className='text-sm h-10 font-normal hover:bg-red-400 hover:text-white'
                             onClick={handleLogout}
                             icon={<PowerIcon />}
                         >
-                            Logout
+                            Logout➡️
                         </MenuItem>
                     </MenuList>
                 </Menu>
             );
         } else {
             return (
-                <div>
+                <div className="flex items-center space-x-4">
                     <Link to="/login">
-                        <Button color="indigo" buttonType="link" ripple="dark">
+                        <Button className='text-l font-bold text-black bg-gray-200  hover:bg-slate-300 shadow-md shadow-black p-2 pl-4 pr-4 rounded-full'  buttonType="link">
                             Login
                         </Button>
                     </Link>
                     <Link to="/register">
-                        <Button color="indigo" buttonType="link" ripple="dark">
+                        <Button className='text-l font-bold text-black bg-gray-200  hover:bg-slate-300 shadow-md shadow-black p-2 pl-4 pr-4 rounded-full'  buttonType="link">
                             Signup
                         </Button>
                     </Link>
@@ -99,9 +99,11 @@ const Headers = () => {
 
     return (
         <>
-            <Navbar className="bg-black" fixed={false}>
-                <div className="flex items-center justify-between w-full">
-                    <div className='text-white text-2xl'>CitizenPulse</div>
+            <Navbar className="p-4 shadow-md shadow-gray-400 outline-none" style={{backgroundColor:"#3A4D39"}}>
+                <div className="flex items-center justify-between w-full outline-none">
+                    <div className='text-white text-3xl font-bold ml-4 transition duration-300 hover:text-zinc-400'>
+                        <Link to={'/login'}>CitizenPulse</Link>
+                    </div>
                     {renderAuthButtons()}
                 </div>
             </Navbar>
