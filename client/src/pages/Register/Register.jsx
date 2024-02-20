@@ -45,6 +45,7 @@ const Register = () => {
       const userDetails = {
         name: firstName+" "+lastName,
         email,
+        selectedRole
       };
       const response = await sendOTP_register(userDetails);
 
