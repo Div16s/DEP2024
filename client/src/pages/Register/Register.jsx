@@ -36,9 +36,12 @@ const Register = () => {
       toast.error("Enter your first name");
     } else if (email == "") {
       toast.error("Enter your email");
-    } else if (selectedRole="") {
-      toast.error("Select your ");
-    } else {
+    } else if (!email.includes("@")) {
+      toast.error("Enter valid email");
+    } else if (selectedRole == "") {
+      toast.error("Select your role");
+    } 
+    else {
       const userDetails = {
         name: firstName+" "+lastName,
         email,
