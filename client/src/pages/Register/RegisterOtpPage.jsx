@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { registerUser } from '../../services/Apis'
-// import { UserContext } from '../UserContext'
 import {sendOTP_register} from '../../services/Apis'
 
 const RegisterOtpPage = () => {
@@ -10,13 +9,14 @@ const RegisterOtpPage = () => {
     const [isButtonDisabled, setButtonDisabled] = useState(false);
     const [isResendButtonDisabled, setResendButtonDisabled] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(60); // 1 minutes in seconds
-    //const { login } = useContext(UserContext);
     const location = useLocation();
     const navigate = useNavigate();
+
     const userDetails = {
         firstName: location.state.firstName,
         lastName: location.state.lastName,
-        email: location.state.email
+        email: location.state.email,
+        role: location.state.role
     }
 
     useEffect(() => {
@@ -41,10 +41,10 @@ const RegisterOtpPage = () => {
         }
         else {
             const data = {
-                firstName: userDetails.firstName,
-                lastName: userDetails.lastName,
+                name: userDetails.firstName + " " + userDetails.lastName,
                 email: userDetails.email,
                 otp: otp,
+                role: userDetails.role,
                 submitTime: Date.now()
             }
 
@@ -54,9 +54,9 @@ const RegisterOtpPage = () => {
             if (response.status === 200) {
                 const userInfo = {
                     id: response.data.id,
-                    firstName: response.data.firstName,
-                    lastName: response.data.lastName,
+                    firstName: response.data.name,
                     email: response.data.email,
+                    role: response.data.role,
                     userToken: response.data.userToken,
                 }
                 localStorage.setItem("userInfo", JSON.stringify(userInfo));

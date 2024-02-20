@@ -22,9 +22,8 @@ const Dashboard = () => {
     }
     else {
       const data = {
-        id: user.id,
-        firstName: firstName,
-        lastName: lastName,
+        email: user.email,
+        name: user.name
       }
       const response = await updateUser(data);
       console.log(response);
@@ -33,7 +32,6 @@ const Dashboard = () => {
         const userInfo = {
           id: response.data.id,
           firstName: response.data.firstName,
-          lastName: response.data.lastName,
           email: response.data.email,
           userToken: response.data.userToken
         }

@@ -4,38 +4,24 @@ import { Menu, Transition } from "@headlessui/react";
 import { ToastContainer, toast } from "react-toastify";
 import { registerUser, sendOTP_register } from "../../services/Apis";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-// import Dropdown from "./Dropdown";
 
 // for dropdown
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const handleRoleSelection = (role) => {
-  setSelectedRole(role);
-  // Do something with the selected role, such as passing it to a parent component via props or updating state
-  console.log("Selected role:", role);
-};
-
 const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedRole, setSelectedRole] = useState(null);
-  //const [showPass,setShowPass] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("");
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const navigate = useNavigate();
 
-
-
-
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
-    // Do something with the selected role, such as passing it to a parent component via props or updating state
-    console.log("Selected role:", role);
   };
   
-  // console.log(props.role);
   //logic for showing/hiding password
   // function handleClick(e){
   //   e.preventDefault();
@@ -50,13 +36,13 @@ const Register = () => {
       toast.error("Enter your first name");
     } else if (email == "") {
       toast.error("Enter your email");
-    } else if (selectedRole="") {
-      toast.error("Select your ");
+    } else if (selectedRole=="") {
+      toast.error("Select your role");
     } else {
       const userDetails = {
-        firstName,
-        lastName,
+        name: firstName+" "+lastName,
         email,
+        role
       };
       const response = await sendOTP_register(userDetails);
 
@@ -149,8 +135,6 @@ const Register = () => {
               className="mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300"
             />
           </div>
-          {/* it adds dropdown menu which allows users to register in different roles */}
-          {/* <Dropdown role ="nothing"/> */}
           <Menu
             as="div"
             className="relative inline-block text-left w-full py-2"
@@ -236,7 +220,7 @@ const Register = () => {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                        STUDENT
+                        JAO
                       </a>
                     )}
                   </Menu.Item>

@@ -1,22 +1,22 @@
 import { commonRequest } from "./ApiCall";
-const BACKEND_URL = "http://localhost:3000"
+const BACKEND_URL = "http://localhost:5000"
 
 export const sendOTP_register = async(data)=>{
-    return await commonRequest("POST",`${BACKEND_URL}/user/register/sendOTP`,data);
+    return await commonRequest("POST",`${BACKEND_URL}/users/signup`,data);
 }
 
 export const registerUser = async(data)=>{
-    return await commonRequest("POST",`${BACKEND_URL}/user/register`,data);
+    return await commonRequest("POST",`${BACKEND_URL}/users/verifyOTP_userSignup`,data);
 }
 
 export const sendOTP = async (data) => {
-    return await commonRequest("POST",`${BACKEND_URL}/user/sendOTP`,data);
+    return await commonRequest("POST",`${BACKEND_URL}/users/login`,data);
 }
 
 export const verifyUser = async (data) => {
-    return await commonRequest("POST",`${BACKEND_URL}/user/login`,data);
+    return await commonRequest("POST",`${BACKEND_URL}/users/verifyOTP_login`,data);
 }
 
 export const updateUser = async (data) => {
-    return await commonRequest("POST",`${BACKEND_URL}/user/update`,data);
+    return await commonRequest("POST",`${BACKEND_URL}/users/update`,data);
 }

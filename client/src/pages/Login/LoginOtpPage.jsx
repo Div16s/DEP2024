@@ -10,7 +10,6 @@ const LoginOtpPage = () => {
     const [isButtonDisabled, setButtonDisabled] = useState(false);
     const [isResendButtonDisabled, setResendButtonDisabled] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(60); // 1 minutes in seconds
-    //const { login } = useContext(UserContext);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -47,14 +46,13 @@ const LoginOtpPage = () => {
             if (response.status === 200) {
                 const userInfo = {
                     id: response.data.id,
-                    firstName: response.data.firstName,
-                    lastName: response.data.lastName,
+                    firstName: response.data.name,
                     email: response.data.email,
+                    role: response.data.role,
                     userToken: response.data.userToken,
                 }
                 localStorage.setItem("userInfo", JSON.stringify(userInfo));
                 toast.success(response.data.message);
-                //login(userInfo);
                 setTimeout(function () {
                     navigate('/dashboard');
                 }, 2000);
