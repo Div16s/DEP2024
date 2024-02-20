@@ -15,11 +15,17 @@ const Register = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
+  const [selectedDept, setSelectedDept] = useState("");
+
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const navigate = useNavigate();
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
+  };
+
+  const handleDeptSelection = (dept) => {
+    setSelectedDept(dept);
   };
   
   //logic for showing/hiding password
@@ -149,10 +155,10 @@ const Register = () => {
             <div>
               <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
                 {selectedDept || "Select Your  Department"}
-                <ChevronDownIcon
+                {selectedDept===""?<ChevronDownIcon
                   className="ml-7  h-5 w-5 text-gray-400"
                   aria-hidden="true"
-                />
+                />: <div></div>}
               </Menu.Button>
             </div>
 
@@ -171,7 +177,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("FACULTY")}
+                        onClick={() => handleDeptSelection("Computer Science Eng")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -179,7 +185,7 @@ const Register = () => {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                        Computer Science(CSE)
+                        Computer Science Eng
                       </a>
                     )}
                   </Menu.Item>
@@ -187,7 +193,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleDeptSelection("Electrical Engineering")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -195,7 +201,7 @@ const Register = () => {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                      Electrical (EE)
+                      Electrical Engineering
                       </a>
                     )}
                   </Menu.Item>
@@ -203,7 +209,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleDeptSelection("Mathematics & Computing ")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -219,7 +225,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleDeptSelection("Chemical Engineering")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -235,7 +241,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleDeptSelection("Civil Engineering ")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -251,7 +257,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleDeptSelection("Biomedical Engineering ")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -267,7 +273,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleDeptSelection("Physics Department")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -283,7 +289,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleDeptSelection("Artificial Intelligence")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -300,7 +306,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("REGISTRAR")}
+                        onClick={() => handleDeptSelection("Machine Learning ")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -316,7 +322,7 @@ const Register = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        onClick={() => handleRoleSelection("STUDENT")}
+                        onClick={() => handleDeptSelection("Others")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -343,10 +349,10 @@ const Register = () => {
             <div>
               <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
                 {selectedRole || "Select your role"}
-                <ChevronDownIcon
-                  className="ml-20 h-5 w-5 text-gray-400"
+                {selectedRole===""?<ChevronDownIcon
+                  className="ml-7  h-5 w-5 text-gray-400"
                   aria-hidden="true"
-                />
+                />: <div></div>}
               </Menu.Button>
             </div>
 
