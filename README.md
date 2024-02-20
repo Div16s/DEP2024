@@ -4,7 +4,15 @@
     Welcome to the Purchase Management project! This project is built using the MERN (MongoDB, Express.js, React.js, Node.js) stack, 
     and it utilizes Tailwind CSS for frontend styling. The goal of this project is to provide a comprehensive solution for managing purchases within an organization.
     
+
+### How to Run The application
+       Go to client folder and run 
+       npm install i
+       npm run dev 
+       Go to server folder 
+       
 ## Features Completed
+
 ### 1. User Authentication
        The project includes a robust user authentication system that enables users to sign up, log in, and manage their profiles.
        The authentication process is enhanced with an email verification mechanism using OTP (One-Time Password).
