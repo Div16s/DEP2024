@@ -9,7 +9,8 @@ import HomePage from "./pages/HomePage"
 import Sidebar from "./components/sidebar"
 import LoginOtpPage from "./pages/Login/LoginOtpPage"
 import RegisterOtpPage from "./pages/Register/RegisterOtpPage"
-
+// import PDFHandler  from "./Forms/PDFHandler"
+// import PDFsp101  from "./Forms/PDFsp101"
 function App() {
   return (
     <>
@@ -17,6 +18,7 @@ function App() {
           <Headers />
           <Routes>
             <Route path="/" element={<HomePage />}/>
+            {/* <Route exact path="/Forms" element={<PDFsp101 />}/> */}
             <Route path='/login' element={<Login />}/>
             <Route path='/register' element={<Register />}/>
             <Route path='/login/user/otp' element={<LoginOtpPage />}/>
