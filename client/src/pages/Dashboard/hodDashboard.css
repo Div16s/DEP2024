@@ -1,0 +1,298 @@
+/** Inspired by: http://graphicburger.com/flat-design-ui-components/ **/
+/** Line-chart and donut-chart made by @kseso https://codepen.io/Kseso/pen/phiyL **/
+body{
+	margin:0px;
+	padding: 0px;
+}
+
+/************************************ FONTS ************************************/
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,700);
+@import url(https://weloveiconfonts.com/api/?family=entypo|fontawesome|zocial);
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+}
+/* fontawesome */
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
+}
+/* zocial */
+[class*="zocial-"]:before {
+  font-family: 'zocial', sans-serif;
+}
+@font-face {
+	font-family: 'icomoon';
+	src:url('https://jlalovi-cv.herokuapp.com/font/icomoon.eot');
+	src:url('https://jlalovi-cv.herokuapp.com/font/icomoon.eot?#iefix') format('embedded-opentype'),
+		url('https://jlalovi-cv.herokuapp.com/font/icomoon.ttf') format('truetype'),
+		url('https://jlalovi-cv.herokuapp.com/font/icomoon.woff') format('woff'),
+		url('https://jlalovi-cv.herokuapp.com/font/icomoon.svg#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.icon-cloudy:before {
+	content: "\e60f";
+}
+.icon-sun:before {
+	content: "\e610";
+}
+.icon-cloudy2:before {
+	content: "\e611";
+}
+/************************************* END FONTS *************************************/
+
+
+
+
+
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+h1 {
+	font-size: 23px;
+}
+
+h2 {
+	font-size: 17px;
+}
+
+p {
+	font-size: 15px;
+}
+
+.main-container{
+	margin:0px !important;
+}
+.menu-box .titular .left-container{
+	width: 500px;
+}
+
+
+	.menu-box-tab{
+		width: 400px;
+	}
+
+.profile{
+	width: 400px;
+	float: right;
+}
+
+a {
+	text-decoration: none;
+	font-size: 15px;
+}
+	a:hover {
+		text-decoration: underline;
+	}
+
+h1, h2, p, a, span{
+	color: #fff;
+}
+	.scnd-font-color {
+		color: #9099b7;
+	}
+
+.icon {
+	font-size: 25px;
+}
+
+.titular {
+	display: block;
+	line-height: 60px;
+	margin: 0;
+	text-align: center;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+
+.profile-picture {
+	border-radius: 100%;
+	
+	
+	text-align: center;
+  	box-sizing: content-box;	
+}
+
+.profile-picture h1{
+	text-align: center;
+	margin-top: 22px;
+	color:white;
+	font-size: 50px;
+}
+.user-name{
+	font-size: larger;
+	font-weight: 700;
+}
+
+#department {
+	font-size: large;
+	font-weight: 400;
+	color:white;
+}
+#role{
+	font-size: large;
+	font-weight: 400;
+	color:white;
+}
+
+
+	.big-profile-picture {
+		margin: auto;	
+		margin-top: 10px;	
+		border: 5px solid #50597b;
+		width: 100px;
+		background-color: black;
+		
+		height: 100px;
+	}
+
+
+
+/** MAIN CONTAINER **/
+
+.main-container {
+	padding-top: 20px;
+	background: #9AD0C2;
+	font-family: 'Ubuntu', sans-serif;
+	width: 100%;
+	height: 60vh;
+	margin:  auto;
+	display: flex;
+	flex-direction: row;
+	
+	margin:0px
+}	
+
+
+.left-container{
+	margin-left:220px;
+	box-shadow: 5px 5px #50597b;
+	height: fit-content;
+}
+
+.middle-container{
+	margin-left:200px
+	
+}
+/*********************************************** HEADER ***********************************************/
+
+.profile{
+	box-shadow: 5px 5px #50597b;
+}
+		.profile-menu {
+			float: right;
+			height: 80px;
+			padding-right: 20px;
+		}
+			.profile-menu p {
+				font-size: 17px;
+				display: inline-block;
+				line-height: 76px;
+				margin: 0;
+				padding-right: 10px;
+			}
+				.profile-menu a {
+					padding-left: 5px;
+				}
+					.profile-menu a:hover {
+						text-decoration: none;
+					}
+			.small-profile-picture {
+				display: inline-block;
+				vertical-align: middle;				
+			}
+
+.block {
+
+	background: #394264;
+	border-radius: 5px;
+}
+		/******************************************** LEFT CONTAINER *****************************************/
+.menu-box {
+	height: auto;
+}
+	.menu-box .titular {
+		background: #11a8ab;
+	}
+	.menu-box-menu .icon {
+		display: inline-block;
+		vertical-align: top;
+		width: 28px;
+		margin-left: 20px;
+		margin-right: 15px;
+		color:white;
+	}
+
+	.menu-box-menu li{
+		height: 60px;
+		position:relative;										
+	}
+	.menu-box-tab {
+		line-height: 60px;
+		display: block;
+		border-bottom: 1px solid #1f253d;
+		-webkit-transition: background .2s;
+		color:white;
+		transition: background .2s;
+	}
+	.menu-box-tab:hover {
+			background: #929dc3;
+			border-top: 1px solid #1f253d;
+			text-decoration: whitesmoke;
+		}
+		.menu-box-tab:hover .icon {
+			color: #fff;
+		}
+		.menu-box-tab:hover .menu-box-number {
+			background: #e64c65;
+		}
+			
+				/******************************************
+				DONUT-CHART by @kseso https://codepen.io/Kseso/pen/phiyL
+				******************************************/
+	
+	
+		/************************************************** MIDDLE CONTAINER **********************************/
+		.middle-container {
+			margin: 0 px;			
+		}
+			.profile {
+				height: 300px;
+			}
+			
+				.user-name {
+					margin: 25px 0 16px;
+					text-align: center;
+				}
+				.profile-description {
+					width: 210px;
+					margin: 0 auto;
+					text-align: center;
+				}
+				.profile-options {
+					padding-top: 23px;
+				}
+					.profile-options li {
+						border-left: 1px solid #1f253d;
+					}
+					
+	

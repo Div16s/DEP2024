@@ -10,7 +10,11 @@ import Sidebar from "./components/sidebar"
 import LoginOtpPage from "./pages/Login/LoginOtpPage"
 import RegisterOtpPage from "./pages/Register/RegisterOtpPage"
 // import PDFHandler  from "./Forms/PDFHandler"
-// import PDFsp101  from "./Forms/PDFsp101"
+import PDFsp101  from "./Forms/PDFsp101"
+import Formsp101 from "./pages/Forms/Form_sp101"
+import Trial from "./pages/Forms/trial"
+import HodDashboard from "./pages/Dashboard/HodDashboard"
+
 function App() {
   return (
     <>
@@ -18,7 +22,9 @@ function App() {
           <Headers />
           <Routes>
             <Route path="/" element={<HomePage />}/>
-            {/* <Route exact path="/Forms" element={<PDFsp101 />}/> */}
+            <Route path="/dashboard/hod" element={<HodDashboard/>} / >
+            <Route exact path="/forms" element={<Formsp101 />}/>
+            <Route exact path="/trial" element={<Trial />}/>
             <Route path='/login' element={<Login />}/>
             <Route path='/register' element={<Register />}/>
             <Route path='/login/user/otp' element={<LoginOtpPage />}/>
