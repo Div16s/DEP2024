@@ -7,9 +7,11 @@
 
 ### How to Run The application
        Go to client folder and run 
-       npm install i
+       npm install 
        npm run dev 
-       Go to server folder 
+       Go to server folder and run
+       npm install
+       npm run dev
        
 ## Features Completed
 
