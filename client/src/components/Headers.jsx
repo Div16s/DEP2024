@@ -111,7 +111,7 @@ const Headers = () => {
     <>
       <Navbar
         className="p-4 shadow-md shadow-gray-400 outline-none"
-        style={{ backgroundColor: "#3A4D39" }}
+        style={{ backgroundColor: "#21381A" }}
       >
         <div className="flex items-center justify-between w-full outline-none">
           <div className="text-white text-3xl font-bold ml-4 transition duration-300 hover:text-zinc-400">
