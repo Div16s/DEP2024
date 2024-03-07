@@ -3,33 +3,33 @@ import otpGenerator from 'otp-generator';
 import sendOTP from '../utils/sendOTP.js'
 import generateToken from '../utils/generateToken.js'
 
-const userSignup = async (req,res) => {
-    const {name,email} = req.body;
-    if(!name || !email){
+const userSignup = async (req, res) => {
+    const { name, email } = req.body;
+    if (!name || !email) {
         return res.status(404).json({
-            message: "Please provide all required details"
+            err: "Please provide all required details"
         });
     }
 
     try {
         const userExists = await prisma.user.findFirst({
-            where: {email: email}
+            where: { email: email }
         });
 
-        if(userExists){
+        if (userExists) {
             res.status(400).json({
                 err: "User already exists in our database"
             });
         }
-        else{
+        else {
             const OTP = otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
             const otpCreationTime = new Date();
-            
+
             const existingEmail = await prisma.userOTP.findFirst({
                 where: { email: email }
             });
-            
-            if(existingEmail){
+
+            if (existingEmail) {
                 await prisma.userOTP.update({
                     where: { id: existingEmail.id },
                     data: {
@@ -40,7 +40,7 @@ const userSignup = async (req,res) => {
 
                 console.log("OTP data saved");
 
-                sendOTP(name,email,OTP,(error, message) => {
+                sendOTP(name, email, OTP, (error, message) => {
                     if (error) {
                         return res.status(404).json({ error: "OTP not sent!" });
                     } else {
@@ -48,7 +48,7 @@ const userSignup = async (req,res) => {
                     }
                 });
             }
-            else{
+            else {
                 await prisma.userOTP.create({
                     data: {
                         email: email,
@@ -59,7 +59,7 @@ const userSignup = async (req,res) => {
 
                 console.log("New OTP data saved");
 
-                sendOTP(name,email,OTP,(error, message) => {
+                sendOTP(name, email, OTP, (error, message) => {
                     if (error) {
                         return res.status(404).json({ error: "OTP not sent!" });
                     } else {
@@ -70,15 +70,23 @@ const userSignup = async (req,res) => {
         }
     } catch (error) {
         res.status(500).json({
-            message: error.message
+            err: error.message
         });
         console.log("Error in userSignup: ", error.message);
     }
 }
 
-const verifyOTP_userSignup = async (req,res) => {
-    const {name,email,role,otp} = req.body;
-    if(!otp){
+const verifyOTP_userSignup = async (req, res) => {
+    let { name, email, role, department, otp } = req.body;
+    if (department === "Computer Science Eng") department = "CSE"
+    else if (department === "Electrical Engineering") department = "EE";
+    else if (department === "Mathematics & Computing") department = "MNC";
+    else if (department === "Mechanical Engineering") department = "ME";
+    else if (department === "Civil Engineering") department = "CE";
+    else if (department === "Chemical Engineering") department = "CH";
+    else if (department === "Physics Department") department = "PH";
+    else if (department === "Biomedical Engineering") department = "BME";
+    if (!otp) {
         res.status(404).json({
             error: "Enter your OTP"
         });
@@ -86,20 +94,22 @@ const verifyOTP_userSignup = async (req,res) => {
 
     try {
         const userExists = await prisma.userOTP.findFirst({
-                where: {email:email}}
+            where: { email: email }
+        }
         );
 
-        console.log("Existing OTP: ",userExists.otp);
-        console.log("Entered OTP: ",otp);
-        
+        console.log("Existing OTP: ", userExists.otp);
+        console.log("Entered OTP: ", otp);
+
         //const timeDifference = ((submitTime - userExists.otpCreationTime)/1000);
         //console.log(timeDifference);
-        if((userExists.otp === otp)){
+        if ((userExists.otp === otp)) {
             const newUser = await prisma.user.create({
                 data: {
                     name,
                     email,
-                    role
+                    role,
+                    department
                 }
             });
 
@@ -107,171 +117,181 @@ const verifyOTP_userSignup = async (req,res) => {
             const token = generateToken(newUser.email);
             console.log(token);
             res.status(200).json({
-                message:"User registration successfully done",
+                message: "User registration successfully done",
                 id: newUser.id,
                 name: newUser.name,
                 email: newUser.email,
+                role: newUser.role,
+                department: newUser.department,
                 userToken: token,
             });
         }
-        else{
+        else {
             res.status(404).json({
-                error: "Invalid OTP"
+                err: "Invalid OTP"
             });
         }
     } catch (error) {
         res.status(400).json({
-            error: error.message
+            err: error.message
         });
-        console.log("Error in verifyOTP_userSignup: ",error.message);
+        console.log("Error in verifyOTP_userSignup: ", error.message);
     }
 
 }
 
-const userLogin = async (req,res) => {
-    const {email} = req.body;
+const userLogin = async (req, res) => {
+    const { email } = req.body;
 
-    if(!email){
+    if (!email) {
         res.status(404).json({
-            error: "Please enter your email."
+            err: "Please enter your email."
         });
     }
 
     try {
         const userExists = await prisma.user.findFirst({
-            where: {email:email}
+            where: { email: email }
         });
 
-        if(userExists){
+        if (userExists) {
             const username = userExists.name;
             const OTP = otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
-            
+
             const otpCreationTime = new Date();
 
             const existingEmail = await prisma.userOTP.findFirst({
-                where: {email:email}
+                where: { email: email }
             });
-            
 
-            if(existingEmail){
+
+            if (existingEmail) {
                 const updateData = await prisma.userOTP.update({
-                    where: {email: email},
+                    where: { email: email },
                     data: {
-                        otp:OTP,
+                        otp: OTP,
                         otpCreationTime: otpCreationTime
                     }
                 });
 
-                sendOTP(username,email,OTP,(error,message)=>{
+                sendOTP(username, email, OTP, (error, message) => {
                     if (error) {
-                        return res.status(404).json({ error: "OTP not sent!" });
+                        return res.status(404).json({ err: "OTP not sent!" });
                     } else {
                         return res.status(200).json({ message: "OTP sent" });
                     }
-                })   
+                })
             }
-            else{
+            else {
                 const newOTPData = await prisma.userOTP.create({
                     email: email,
-                    otp:OTP,
+                    otp: OTP,
                     otpCreationTime: otpCreationTime
                 });
 
-                sendOTP(username,email,OTP,(error,message)=>{
+                sendOTP(username, email, OTP, (error, message) => {
                     if (error) {
-                        return res.status(404).json({ error: "OTP not sent!" });
+                        return res.status(404).json({ err: "OTP not sent!" });
                     } else {
                         return res.status(200).json({ message: "OTP sent" });
                     }
                 })
             }
         }
-        else{
+        else {
             res.status(400).json({
-                error: "User doesn't exists in our database."
+                err: "User doesn't exists in our database."
             });
         }
     } catch (error) {
         res.status(500).json({
-            message: error.message
+            err: error.message
         });
-        console.log("Error in userLogin: ",error.message);
+        console.log("Error in userLogin: ", error.message);
     }
 }
 
-const verifyOTP_userLogin = async (req,res) => {
-    const {email,otp} = req.body;
-    if(!otp){
+const verifyOTP_userLogin = async (req, res) => {
+    const { email, otp } = req.body;
+    if (!otp) {
         res.status(404).json({
-            error: "Enter your OTP"
+            err: "Enter your OTP"
         });
     }
 
     try {
         const userExists = await prisma.userOTP.findFirst({
-            where: {email:email}
+            where: { email: email }
         });
         // console.log(submitTime);
         // console.log(userExists.otpCreationTime);
         // const timeDifference = ((submitTime - userExists.otpCreationTime)/1000);
         //console.log(timeDifference);
-        if((userExists.otp === otp)){
+        if ((userExists.otp === otp)) {
             const existingUser = await prisma.user.findFirst({
-                where: {email:email}
+                where: { email: email }
             });
 
             //token generation
             const token = generateToken(userExists.email);
 
             res.status(200).json({
-                message:"User login successfully done",
+                message: "User login successfully done",
                 id: existingUser.id,
                 name: existingUser.name,
                 email: existingUser.email,
                 role: existingUser.role,
+                department: existingUser.department,
                 userToken: token
             });
         }
-        else{
+        else {
             res.status(404).json({
-                error: "Invalid OTP"
+                err: "Invalid OTP"
             });
         }
     } catch (error) {
         res.status(500).json({
-            message: error.message
+            err: error.message
         });
-        console.log("Error in verifyOTP_userLogin: ",error.message);
+        console.log("Error in verifyOTP_userLogin: ", error.message);
     }
 }
 
-const updateUserProfile = async (req,res) => {
-    const {name,email} = req.body;
+const updateUserProfile = async (req, res) => {
+    const { name, email } = req.body;
 
     try {
-        const user = await prisma.user.findFirst({
-            where: {email: email}
+        const existingUser = await prisma.user.findFirst({
+            where: { email: email }
         });
-        if(user){
-            await prisma.user.update({
+        if (existingUser) {
+            const updatedUser = await prisma.user.update({
                 where: { email: email },
                 data: { name: name }
             });
 
+            const token = generateToken(updatedUser.email);
+
             res.status(200).json({
                 message: "Profile updated successfully",
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                department: updatedUser.department,
+                userToken: token
             });
         }
-        else{
+        else {
             res.status(404).json({
-                message: "User not found"
+                err: "User not found"
             })
         }
     } catch (error) {
         res.status(500).json({
-            message: error.message,
+            err: error.message,
         });
     }
 }
 
-export {userSignup, verifyOTP_userSignup, userLogin, verifyOTP_userLogin, updateUserProfile}
+export { userSignup, verifyOTP_userSignup, userLogin, verifyOTP_userLogin, updateUserProfile }

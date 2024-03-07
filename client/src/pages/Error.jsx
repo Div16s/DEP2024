@@ -2,9 +2,7 @@ import React from 'react'
 
 const Error = () => {
   return (
-    <div>
-      
-    </div>
+      <h1 className='mt-2 ml-2 font-bold text-lg text-black'>Error</h1>
   )
 }
 

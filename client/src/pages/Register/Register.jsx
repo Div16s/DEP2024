@@ -11,11 +11,10 @@ function classNames(...classes) {
 }
 
 const Register = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedRole, setSelectedRole] = useState("");
-  const [selectedDept, setSelectedDept] = useState("");
+  let [selectedRole, setSelectedRole] = useState("");
+  let [selectedDept, setSelectedDept] = useState("");
 
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const navigate = useNavigate();
@@ -27,45 +26,52 @@ const Register = () => {
   const handleDeptSelection = (dept) => {
     setSelectedDept(dept);
   };
-  
+
   //logic for showing/hiding password
   // function handleClick(e){
   //   e.preventDefault();
   //   setShowPass(!showPass);
   // }
-
   //validation checks
   async function handleRegister(e) {
     e.preventDefault();
     setButtonDisabled(true);
-    if (firstName === "") {
-      toast.error("Enter your first name");
-    } else if (email == "") {
+    if (name === "") {
+      toast.error("Enter your name");
+    } else if (email === "") {
       toast.error("Enter your email");
     } else if (!email.includes("@")) {
       toast.error("Enter valid email");
-    } else if (selectedRole == "") {
+    } else if (selectedRole === "") {
       toast.error("Select your role");
-    }  else if (selectedDept == "") {
+    } else if (selectedDept === "") {
       toast.error("Select your Department");
-    } 
+    }
     else {
       const userDetails = {
-        name: firstName+" "+lastName,
-        email,
-        selectedRole,
-        selectedDept
+        name: name,
+        email: email,
+        role: selectedRole,
+        department: selectedDept
       };
+
+      // console.log(selectedRole);
+      // console.log(selectedDept);
+
       const response = await sendOTP_register(userDetails);
+
+      // console.log(selectedRole);
+      // console.log(selectedDept);
 
       if (response.status === 200) {
         toast.success(response.data.message);
-        setFirstName("");
-        setLastName("");
-        setEmail("");
         setTimeout(function () {
           navigate("/register/user/otp", { state: userDetails });
         }, 2000);
+        setName("");
+        setEmail("");
+        setSelectedRole("");
+        setSelectedDept("");
       } else {
         toast.error(response.response.data.err);
       }
@@ -98,34 +104,16 @@ const Register = () => {
               for="name"
               className="block text-sm font-medium text-gray-600"
             >
-              First Name
+              Name
             </label>
             <input
               onChange={(e) => {
-                setFirstName(e.target.value);
+                setName(e.target.value);
               }}
               type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="Enter your first name here..."
-              className="mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300"
-            />
-          </div>
-          <div class="mb-4">
-            <label
-              for="name"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Last Name
-            </label>
-            <input
-              onChange={(e) => {
-                setLastName(e.target.value);
-              }}
-              type="text"
-              id="lastName"
-              name="lastName"
-              placeholder="Enter your last name here..."
+              id="name"
+              name="name"
+              placeholder="Enter your name here..."
               className="mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300"
             />
           </div>
@@ -147,18 +135,25 @@ const Register = () => {
               className="mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300"
             />
           </div>
-                {/* Select department from dropdown */}
+          {/* Select department from dropdown */}
           <Menu
             as="div"
             className="relative inline-block text-left w-full py-2"
           >
+            <label
+              for="department"
+              className="bock text-sm font-medium text-gray-600"
+            >
+              Department
+            </label>
             <div>
               <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
                 {selectedDept || "Select Your  Department"}
-                {selectedDept===""?<ChevronDownIcon
+                {selectedDept === "" ? <ChevronDownIcon
                   className="ml-7  h-5 w-5 text-gray-400"
                   aria-hidden="true"
-                />: <div></div>}
+                /> : <div>
+                </div>}
               </Menu.Button>
             </div>
 
@@ -176,7 +171,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
                         onClick={() => handleDeptSelection("Computer Science Eng")}
                         className={classNames(
                           active
@@ -192,7 +186,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
                         onClick={() => handleDeptSelection("Electrical Engineering")}
                         className={classNames(
                           active
@@ -201,15 +194,14 @@ const Register = () => {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                      Electrical Engineering
+                        Electrical Engineering
                       </a>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
-                        onClick={() => handleDeptSelection("Mathematics & Computing ")}
+                        onClick={() => handleDeptSelection("Mathematics & Computing")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -217,14 +209,14 @@ const Register = () => {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                        Mathematics & Computing 
+                        Mathematics & Computing
                       </a>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleDeptSelection("Chemical Engineering")}
                         className={classNames(
                           active
@@ -240,8 +232,8 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
-                        onClick={() => handleDeptSelection("Civil Engineering ")}
+
+                        onClick={() => handleDeptSelection("Civil Engineering")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -249,15 +241,15 @@ const Register = () => {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                        Civil Engineering 
+                        Civil Engineering
                       </a>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
-                        onClick={() => handleDeptSelection("Biomedical Engineering ")}
+
+                        onClick={() => handleDeptSelection("Biomedical Engineering")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -265,14 +257,14 @@ const Register = () => {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                        Biomedical Engineering 
+                        Biomedical Engineering
                       </a>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleDeptSelection("Physics Department")}
                         className={classNames(
                           active
@@ -288,7 +280,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleDeptSelection("Artificial Intelligence")}
                         className={classNames(
                           active
@@ -301,12 +293,12 @@ const Register = () => {
                       </a>
                     )}
                   </Menu.Item>
-                  
+
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
-                        onClick={() => handleDeptSelection("Machine Learning ")}
+
+                        onClick={() => handleDeptSelection("Machine Learning")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -314,14 +306,14 @@ const Register = () => {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                        Machine Learning 
+                        Machine Learning
                       </a>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleDeptSelection("Others")}
                         className={classNames(
                           active
@@ -346,13 +338,19 @@ const Register = () => {
             as="div"
             className="relative inline-block text-left w-full py-2"
           >
+          <label
+              for="department"
+              className="bock text-sm font-medium text-gray-600"
+            >
+              Role
+            </label>
             <div>
               <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
                 {selectedRole || "Select your role"}
-                {selectedRole===""?<ChevronDownIcon
+                {selectedRole === "" ? <ChevronDownIcon
                   className="ml-7  h-5 w-5 text-gray-400"
                   aria-hidden="true"
-                />: <div></div>}
+                /> : <div></div>}
               </Menu.Button>
             </div>
 
@@ -370,7 +368,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("FACULTY")}
                         className={classNames(
                           active
@@ -386,7 +384,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -402,7 +400,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -418,7 +416,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -434,7 +432,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -450,7 +448,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -466,7 +464,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -482,7 +480,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -495,11 +493,11 @@ const Register = () => {
                       </a>
                     )}
                   </Menu.Item>
-                  
+
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("REGISTRAR")}
                         className={classNames(
                           active
@@ -515,7 +513,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
+
                         onClick={() => handleRoleSelection("STUDENT")}
                         className={classNames(
                           active

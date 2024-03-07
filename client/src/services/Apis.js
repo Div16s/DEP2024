@@ -6,7 +6,7 @@ export const sendOTP_register = async(data)=>{
 }
 
 export const registerUser = async(data)=>{
-    return await commonRequest("POST",`${BACKEND_URL}/users/verifyOTP_userSignup`,data);
+    return await commonRequest("POST",`${BACKEND_URL}/users/verifyOTP_signup`,data);
 }
 
 export const sendOTP = async (data) => {

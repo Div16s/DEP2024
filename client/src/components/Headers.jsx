@@ -4,8 +4,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import {
   Navbar,
-  MobileNav,
-  Typography,
   Button,
   Menu,
   MenuHandler,
@@ -17,21 +15,11 @@ import {
 } from "@material-tailwind/react";
 
 import {
-  CubeTransparentIcon,
-  UserCircleIcon,
-  CodeBracketSquareIcon,
-  Square3Stack3DIcon,
-  ChevronDownIcon,
-  Cog6ToothIcon,
-  InboxArrowDownIcon,
-  LifebuoyIcon,
   PowerIcon,
-  RocketLaunchIcon,
-  Bars2Icon,
 } from "@heroicons/react/24/solid";
 
 const Headers = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Replace with your authentication logic
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { logout } = useContext(UserContext);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("userInfo"));
@@ -51,10 +39,8 @@ const Headers = () => {
 
   const renderAuthButtons = () => {
     if (isAuthenticated) {
-      const initials =
-        user.firstName && user.lastName
-          ? user.firstName[0] + user.lastName[0]
-          : user.firstName[0];
+      const initials = user.name[0] + user.name[1].toUpperCase()
+
       return (
         <Menu>
           <MenuHandler>
@@ -65,13 +51,20 @@ const Headers = () => {
               {initials}
             </div>
           </MenuHandler>
-          <MenuList className="w-40 h-20 bg-white">
+          <MenuList className="w-40 h-30 bg-white">
             <MenuItem
               className="text-sm h-10 font-normal hover:bg-zinc-400 hover:text-white"
               onClick={() => navigate("/dashboard")}
               icon={<PowerIcon />}
             >
               Dashboard
+            </MenuItem>
+            <MenuItem
+              className="text-sm h-10 font-normal hover:bg-zinc-400 hover:text-white"
+              onClick={() => navigate("/update")}
+              icon={<PowerIcon />}
+            >
+              Edit Profile
             </MenuItem>
             <MenuItem
               className="text-sm h-10 font-normal hover:bg-red-400 hover:text-white"
@@ -110,16 +103,27 @@ const Headers = () => {
   return (
     <>
       <Navbar
-        className="p-4 shadow-md shadow-gray-400 outline-none"
+        className="p-4 shadow-md shadow-gray-400 outline-none fixed top-0 left-0 w-full"
         style={{ backgroundColor: "#3A4D39" }}
       >
         <div className="flex items-center justify-between w-full outline-none">
           <div className="text-white text-3xl font-bold ml-4 transition duration-300 hover:text-zinc-400">
-            <Link to={"/login"}>Purchase Management</Link>
+            <Link to={"/"}>Purchase Management</Link>
           </div>
-          {renderAuthButtons()}
+          <div>
+            {renderAuthButtons()}
+          </div>
         </div>
       </Navbar>
+      {/* <nav className="fixed top-0 left-0 w-full z-50 bg-green-900 shadow-md shadow-gray-400 outline-none p-4">
+            <div className="flex items-center justify-between w-full">
+                <div className="text-white text-3xl font-bold ml-4 transition duration-300 hover:text-zinc-400">
+                    <Link to="/">Purchase Management</Link>
+                </div>
+                {renderAuthButtons()}
+            </div>
+      </nav> */}
+      
     </>
   );
 };

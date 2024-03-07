@@ -46,9 +46,10 @@ const LoginOtpPage = () => {
             if (response.status === 200) {
                 const userInfo = {
                     id: response.data.id,
-                    firstName: response.data.name,
+                    name: response.data.name,
                     email: response.data.email,
                     role: response.data.role,
+                    department: response.data.department,
                     userToken: response.data.userToken,
                 }
                 localStorage.setItem("userInfo", JSON.stringify(userInfo));

@@ -12,11 +12,16 @@ const RegisterOtpPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    console.log("Role: ",location.state.name);
+    console.log("Role: ",location.state.email);
+    console.log("Role: ",location.state.role);
+    console.log("Department: ",location.state.department);
+
     const userDetails = {
-        firstName: location.state.firstName,
-        lastName: location.state.lastName,
+        name: location.state.name,
         email: location.state.email,
-        role: location.state.role
+        role: location.state.role,
+        department: location.state.department
     }
 
     useEffect(() => {
@@ -41,10 +46,11 @@ const RegisterOtpPage = () => {
         }
         else {
             const data = {
-                name: userDetails.firstName + " " + userDetails.lastName,
+                name: userDetails.name,
                 email: userDetails.email,
                 otp: otp,
                 role: userDetails.role,
+                department: userDetails.department,
                 submitTime: Date.now()
             }
 
@@ -54,9 +60,10 @@ const RegisterOtpPage = () => {
             if (response.status === 200) {
                 const userInfo = {
                     id: response.data.id,
-                    firstName: response.data.name,
+                    name: response.data.name,
                     email: response.data.email,
                     role: response.data.role,
+                    department: response.data.department,
                     userToken: response.data.userToken,
                 }
                 localStorage.setItem("userInfo", JSON.stringify(userInfo));

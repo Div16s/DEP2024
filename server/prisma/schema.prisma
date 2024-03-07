@@ -23,13 +23,25 @@ enum Role {
   REGISTRAR
 }
 
+enum Department {
+  CSE
+  EE
+  MNC
+  ME
+  CH
+  CE
+  BME
+  PH
+}
+
 // User model representing all types of users
 model User {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   name       String
-  email      String   @unique
-  role       Role     @default(FACULTY)
-  created_at DateTime @default(now())
+  email      String    @unique
+  role       Role      @default(FACULTY)
+  department Department @default(CSE)
+  created_at DateTime  @default(now())
 }
 
 // OTP Model
