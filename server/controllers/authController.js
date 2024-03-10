@@ -259,33 +259,40 @@ const verifyOTP_userLogin = async (req, res) => {
 }
 
 const updateUserProfile = async (req, res) => {
-    const { name, email } = req.body;
+    const { id, name, signatureFile } = req.body;
+    const userId = parseInt(id);
 
     try {
         const existingUser = await prisma.user.findFirst({
-            where: { email: email }
+            where: { id: userId }
         });
         if (existingUser) {
+            console.log("Existing User Signature: ", existingUser.signature);
+
             const updatedUser = await prisma.user.update({
-                where: { email: email },
-                data: { name: name }
+                where: { id: userId },
+                data: {
+                    name: name,
+                    signature: signatureFile
+                }
             });
 
             const token = generateToken(updatedUser.email);
 
             res.status(200).json({
                 message: "Profile updated successfully",
+                id: updatedUser.id,
                 name: updatedUser.name,
                 email: updatedUser.email,
                 role: updatedUser.role,
                 department: updatedUser.department,
+                signatureFile: updatedUser.signature,
                 userToken: token
             });
-        }
-        else {
+        } else {
             res.status(404).json({
                 err: "User not found"
-            })
+            });
         }
     } catch (error) {
         res.status(500).json({

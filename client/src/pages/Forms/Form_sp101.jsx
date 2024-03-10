@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Form_sp101.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import  ContextFormSP101Data  from "../../Context/ContextFormSP101Data";
+import ContextFormSP101Data from "../../Context/ContextFormSP101Data";
+import SP_101 from './SP_101';
 
 
 const Form_sp101 = () => {
@@ -16,7 +17,7 @@ const Form_sp101 = () => {
   const [quantity, setQuantity] = useState();
   const [price, setPrice] = useState();
   const [editingIndex, setEditingIndex] = useState(null); // Index of item being edited
-  const [category ,setCategory] = useState();
+  const [category, setCategory] = useState();
   const [budgetaryApprovalEnclosed, setBudgetaryApprovalEnclosed] = useState()
   const [readyForInstallation, setReadyForInstallation] = useState()
   const [goodForResearchPurpose, setGoodForResearchPurpose] = useState()
@@ -26,18 +27,22 @@ const Form_sp101 = () => {
   const [numberOfQuotation, setNumberOfQuotation] = useState()
   const [quotationNumber, setQuotationNumber] = useState()
   const [modeOfPayment, setModeOfPayment] = useState()
-  const [deliveryPeriod, setDeliveryPeriod] = useState()
+  const [deliveryPeriod, setDeliveryPeriod] = useState();
 
   const navigate = useNavigate();
-  const {formData,setFormData} = useContext(ContextFormSP101Data);
-  const handleSubmit = (e) =>{
+
+  const { formData, setFormData } = useContext(ContextFormSP101Data);
+
+  //function for handling downloading pdf form
+  const handleDownloadPDF = (e) => {
     e.preventDefault();
 
     //error handling 
-    if(budgetHead===null || sanctionedBudget === null) {
+    if (budgetHead === null || sanctionedBudget === null) {
       toast.error("All fields are required."); return;
     }
-    setFormData({budgetHead,sanctionedBudget,approxCost,items,category,
+    setFormData({
+      budgetHead, sanctionedBudget, approxCost, items, category,
       budgetaryApprovalEnclosed,
       readyForInstallation,
       goodForResearchPurpose,
@@ -50,9 +55,21 @@ const Form_sp101 = () => {
       deliveryPeriod
 
     });
-    console.log(formData);
-    navigate('/SP_101');
   }
+
+  useEffect(() => {
+    if (formData) {
+      SP_101({ formData });
+    }
+  }, [formData]);
+
+  //function for handling submit click
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Handle Submit is clicked");
+  }
+
+
   // Function to handle adding new item
   const addItem = () => {
     const newItem = {
@@ -307,9 +324,9 @@ const Form_sp101 = () => {
                       <label className="control-label" htmlFor="">
                         Category:
                       </label>
-                      <select className="form-control input-sm" id="category" 
-                      onChange={(event) => setCategory(event.target.value)}
-                      
+                      <select className="form-control input-sm" id="category"
+                        onChange={(event) => setCategory(event.target.value)}
+
                       >
                         <option value="" disabled selected>-- Select --</option>
                         <option value="LTA">LTA</option>
@@ -374,7 +391,7 @@ const Form_sp101 = () => {
                   {/* Gem purchase */}
                   <div className="">
                     <div className="my-2 mx-4">
-                    GeM Purchase:
+                      GeM Purchase:
                       <select
                         className="form-control mt-2 input-sm"
                         id="email-type"
@@ -383,7 +400,7 @@ const Form_sp101 = () => {
                         <option value="" disabled selected>-- Select --</option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
-                       
+
                       </select>
                     </div>
                   </div>
@@ -394,9 +411,9 @@ const Form_sp101 = () => {
 
 
 
-<div className="">
+                  <div className="">
                     <div className="my-2 mx-4">
-                    Mode of Enquiry: 
+                      Mode of Enquiry:
                       <select
                         className="form-control mt-2 input-sm"
                         id="email-type"
@@ -408,7 +425,7 @@ const Form_sp101 = () => {
                         <option value="Vendor's Website">Vendor's Website</option>
                         <option value="E-mail">E-mail</option>
                         <option value="GeM">GeM</option>
-                       
+
                       </select>
                     </div>
                   </div>
@@ -417,16 +434,16 @@ const Form_sp101 = () => {
                     <div className="quotation ">
                       Number of quotations received :
                     </div>
-                    <input 
-                    onChange={(e) => setNumberOfQuotation(e.target.value)}
-                    className="input-sm form-control " type="text" />
+                    <input
+                      onChange={(e) => setNumberOfQuotation(e.target.value)}
+                      className="input-sm form-control " type="text" />
                   </div>
                   <div className="mx-4 my-2 mt-2 flex">
                     <div className="quotation ">Name of the supplier :</div>
                     <input className="input-sm form-control "
-                     type="text"
-                     onChange={(e) => setNameOfSupplier(e.target.value)}
-                     />
+                      type="text"
+                      onChange={(e) => setNameOfSupplier(e.target.value)}
+                    />
                   </div>
 
                   <div className="col-sm-6">
@@ -459,17 +476,17 @@ const Form_sp101 = () => {
                   </div>
                   {/* / end col */}
 
-                 
+
 
 
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="control-label modeOfPayment" htmlFor="">
-                      Recommended Mode of Payment:
+                        Recommended Mode of Payment:
                       </label>
-                      <select className="form-control input-sm" id="category" 
-                      onChange={(event) => setModeOfPayment(event.target.value)}
-                      
+                      <select className="form-control input-sm" id="category"
+                        onChange={(event) => setModeOfPayment(event.target.value)}
+
                       >
                         <option value="" disabled selected>-- Select --</option>
                         <option value="Online">Online</option>
@@ -522,13 +539,13 @@ const Form_sp101 = () => {
                     {/* ================= address ================= */}
 
                   {/* / end col */}
-                 
+
                   {/* / end col */}
                   {/* dob */}
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="control-label" htmlFor="dob">
-                       Delivery Period
+                        Delivery Period
                       </label>
                       <input
                         type="text"
@@ -556,10 +573,17 @@ const Form_sp101 = () => {
               <section className="text-right">
                 <button
                   type="button"
-                  className="btn bg-green-500 btn-primary btn-sm hover:bg-green-700 next"
+                  className="bg-blue-500 text-white btn-sm hover:bg-blue-700 next"
+                  onClick={handleDownloadPDF}
+                >
+                  Download PDF
+                </button>
+                <button
+                  type="button"
+                  className="bg-green-500 text-white btn-sm hover:bg-green-700 ml-4 next"
                   onClick={handleSubmit}
                 >
-                  Continue
+                  Submit
                 </button>
               </section>
             </div>

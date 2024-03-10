@@ -20,3 +20,7 @@ export const verifyUser = async (data) => {
 export const updateUser = async (data) => {
     return await commonRequest("POST",`${BACKEND_URL}/users/update`,data);
 }
+
+export const pendingForms = async (data) => {
+    return await commonRequest("POST",`${BACKEND_URL}/forms/pending`,data);
+}

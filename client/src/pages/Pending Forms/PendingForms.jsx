@@ -38,7 +38,7 @@ const TABLE_ROWS = [
 
 export default function PendingForms() {
     return (
-        <div>
+        <div className="h-screen">
             <h1 className="mt-32 -mb-10 ml-36 text-lg text-blue-gray-900 font-semibold">
                 <MdOutlinePendingActions size={40}/>
                 PENDING FORMS 
