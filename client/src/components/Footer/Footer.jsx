@@ -1,4 +1,4 @@
-import { Typography } from "@material-tailwind/react";
+import { Typography, Link } from "@material-tailwind/react";
 
 const LINKS = [
   //   {
@@ -7,11 +7,11 @@ const LINKS = [
   //   },
   {
     title: "Company",
-    items: ["About us"],
+    items: [<Link href="/AboutUs" key="about-us">About Us</Link>],
   },
   {
     title: "Resource",
-    items: ["Help center"],
+    items: [<Link href="/FAQ" key="faq">Help Center</Link>],
   },
 ];
 
@@ -20,21 +20,21 @@ const currentYear = new Date().getFullYear();
 export function FooterWithSocialLinks() {
   return (
     <div className="flex flex-col flex-shrink-0">
-      <footer className="w-full mt-10 border border-gray-300 bg-gray-300 font-white">
+      <footer className="w-full mt-10 border border-gray-300 bg-indigo-800 font-white">
         <div className="mx-auto w-full max-w-7xl px-8 mt-2">
-          <div className="grid grid-cols-1 justify-between gap-4 md:grid-cols-2">
-            <Typography variant="h5" className="mb-6">
+          <div className="grid grid-cols-1 justify-between gap-8 md:grid-cols-2">
+            <Typography variant="h3" className="mt-7 mb-7 text-white">
               Purchase Management
               <br />
               Indian Institute of Technology, Ropar
             </Typography>
-            <div className="grid grid-cols-3 justify-between gap-4">
+            <div className="grid grid-cols-3 justify-between gap-4 text-xl">
               {LINKS.map(({ title, items }) => (
                 <ul key={title}>
                   <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="mb-3 font-medium opacity-40"
+                    variant="4xl"
+                    color="white"
+                    className="mb-5 font-3xl opacity-1000"
                   >
                     {title}
                   </Typography>
@@ -42,11 +42,12 @@ export function FooterWithSocialLinks() {
                     <li key={link}>
                       <Typography
                         as="a"
-                        href="#"
-                        color="gray"
+                        // href="#"
+                        href={link.props.href}
+                        color="black"
                         className="py-1.5 font-normal transition-colors hover:text-blue-gray-900"
                       >
-                        {link}
+                        {link.props.children}
                       </Typography>
                     </li>
                   ))}

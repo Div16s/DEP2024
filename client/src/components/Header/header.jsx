@@ -161,11 +161,11 @@ function StickyNavbar() {
     } else {
       return (
         <div className="flex items-center gap-x-1">
-          <Button variant="text" size="md">
-            <Link className="hover:text-white" to={"/login"} style={{fontSize:"9px"}}>Login</Link>
+          <Button variant="text" size="lg">
+            <Link className="text-white" to={"/login"} style={{fontSize:"18px"}} >Login</Link>
           </Button>
-          <Button variant="gradient" size="md">
-            <Link className="hover:text-white" to={"/signup"} style={{fontSize:"9px"}}>Signup</Link>
+          <Button variant="text" size="lg">
+            <Link className="text-white" to={"/signup"} style={{fontSize:"18px"}}>Signup</Link>
           </Button>
         </div>
       );
@@ -174,12 +174,12 @@ function StickyNavbar() {
 
   return (
     <div className="-m-0 max-h-[768px] w-[calc(100%+46px)] mb-14">
-      <Navbar className="fixed left-0 right-0 top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4" style={{ backgroundColor: "#BFD8AF" }}>
-        <div className="flex items-center justify-between text-blue-gray-900">
+      <Navbar className="fixed left-0 right-0 top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4" style={{ backgroundColor: "#3730a3" }}>
+        <div className="flex items-center justify-between text-white-900">
           <Typography
             as="a"
             href="/"
-            className="mr-4 cursor-pointer p-2 font-bold text-lg rounded-md text-gray-900 bg-white shadow-md"
+            className="mr-4 cursor-pointer p-2 font-bold text-4xl rounded-md text-#fff-900"
           >
             PURCHASE MANAGEMENT
           </Typography>
