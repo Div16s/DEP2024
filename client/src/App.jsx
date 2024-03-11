@@ -17,6 +17,8 @@ import PendingForms from "./pages/Pending Forms/PendingForms"
 import StickyNavbar from "./components/Header/header"
 import { FooterWithSocialLinks } from "./components/Footer/Footer"
 import ContextFormSP101DataProvider from "./Context/ContextFormSP101DataProvider"
+import AboutUs from "./pages/AboutUs"
+import FAQ from "./pages/FAQ"
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
             <Route path='/signup' element={<Register />}/>
             <Route path='/login/user/otp' element={<LoginOtpPage />}/>
             <Route path='/register/user/otp' element={<RegisterOtpPage />} />
+            <Route path="/AboutUs" element={<AboutUs />}/>
+            <Route path="/FAQ" element={<FAQ />}/>
             <Route path='/dashboard' element={<Dashboard />}/>
             <Route path="/update" element={<UpdateProfilePage />}/>
             <Route path="/approvedForms" element={<ApprovedForms />}/>
