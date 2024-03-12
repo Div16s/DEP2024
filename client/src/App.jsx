@@ -11,7 +11,10 @@ import RegisterOtpPage from "./pages/Register/RegisterOtpPage"
 import UpdateProfilePage from "./pages/UpdateProfilePage"
 import Form_sp101 from "./pages/Forms/Form_sp101"
 import Form_sp102 from "./pages/Forms/Form_sp102"
+import Form_BudgetSection from "./pages/Forms/Form_BudgetSection"
+import Form_PurchaseSection from "./pages/Forms/Form_PurchaseSection"
 import SP_101 from "./pages/Forms/SP_101"
+
 import ApprovedForms from "./pages/ApprovedForms.jsx/ApprovedForms"
 import PendingForms from "./pages/Pending Forms/PendingForms"
 import StickyNavbar from "./components/Header/header"
@@ -30,6 +33,8 @@ function App() {
             <Route path="/" element={<HomePage />}/>
             <Route exact path="/forms/SP101" element={<Form_sp101 />}/>
             <Route exact path="/forms/SP102" element={<Form_sp102 />}/>
+            <Route exact path="/forms/budgetsection" element={<Form_BudgetSection />}/>
+            <Route exact path="/forms/purchasesection" element={<Form_PurchaseSection />}/>
             <Route exact path="/SP_101" element={<SP_101 />}/>
             <Route path='/login' element={<Login />}/>
             <Route path='/signup' element={<Register />}/>

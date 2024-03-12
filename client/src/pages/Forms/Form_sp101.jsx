@@ -22,6 +22,8 @@ const Form_sp101 = () => {
   const [readyForInstallation, setReadyForInstallation] = useState()
   const [goodForResearchPurpose, setGoodForResearchPurpose] = useState()
   const [GEM, setGEM] = useState()
+  const [gemarDetails, setGemarDetails] = useState()
+  const [ptsId, setPtsId] = useState()
   const [modeOfEnquiry, setModeOfEnquiry] = useState()
   const [nameOfSupplier, setNameOfSupplier] = useState()
   const [numberOfQuotation, setNumberOfQuotation] = useState()
@@ -46,7 +48,7 @@ const Form_sp101 = () => {
       budgetaryApprovalEnclosed,
       readyForInstallation,
       goodForResearchPurpose,
-      GEM,
+      GEM,gemarDetails,ptsId,
       modeOfEnquiry,
       nameOfSupplier,
       numberOfQuotation,
@@ -409,7 +411,41 @@ const Form_sp101 = () => {
                     <input className="input-sm form-control " type="text" />
                   </div> */}
 
-
+                  {
+                    (GEM=="No")?
+                    <>
+                    <div className="col-sm-6">
+                    <div className="form-group">
+                      <label className="control-label" htmlFor="name--last">
+                        GeMAR Details<span className="required">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control input-sm"
+                        id="name__last"
+                        value={gemarDetails}
+                        onChange={(e) => setGemarDetails(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="form-group">
+                      <label className="control-label" htmlFor="name--last">
+                        PTS ID<span className="required">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control input-sm"
+                        id="name__last"
+                        value={ptsId}
+                        onChange={(e) => setPtsId(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                    </> 
+                    :
+                    <></>
+                  }
 
                   <div className="">
                     <div className="my-2 mx-4">

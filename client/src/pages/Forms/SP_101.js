@@ -1,13 +1,23 @@
 import { jsPDF } from 'jspdf';
 import React, { useState, useContext } from 'react';
 import ContextFormSP101Data from '../../Context/ContextFormSP101Data';
+import imageUrl from '../../assets/Calendar.png';
+var testing =1;
 
 
 function SP_101({ formData }) {
     const userInfoString = localStorage.getItem("userInfo");
     const user = JSON.parse(userInfoString);
-    const name = user.name;
-    const department = user.department;
+  
+
+    const name ="rocky";
+    const department="cse";
+
+    // const name = user.name;
+    // const department = user.department;
+
+
+   
 
     let bool = 1;
     if (bool === 0) return;
@@ -35,7 +45,18 @@ function SP_101({ formData }) {
     //       deliveryPeriod
     const val = 4;
 
+   
 
+    // Function to add image to jsPDF document
+
+       // Adjust coordinates and size as needed
+      
+  
+
+    // Example usage
+    // Replace with your image URL
+
+  
     const doc = new jsPDF({ orientation: "p", lineHeight: 1 });
     var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
     var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
@@ -44,6 +65,7 @@ function SP_101({ formData }) {
     doc.setFontSize(10);
     doc.text("INDIAN INSTITUTE OF TECHNOLOGY, ROPAR", pageWidth / 2, 10, { align: 'center' })
     doc.line(pageWidth - 20, 11, 20, 11)
+
 
 
     doc.setFont('times', 'bold')
@@ -307,8 +329,14 @@ function SP_101({ formData }) {
     doc.setFont("times", 'bold')
     doc.text("Delivery Period:", 21, ypos, { align: 'left' })
     doc.text(`${formData && formData.deliveryPeriod}`, 60, ypos, { align: 'left' })
-    doc.setFont("times", 'normal')
+    doc.addImage(imageUrl, 'PNG', 165, ypos, 10, 10); 
     ypos += 15
+    doc.text("Signature of the Indenter", 180,ypos,{ align: 'right' })
+    doc.setFont("times", 'bold')
+    doc.addImage(imageUrl, 'PNG', 40, ypos, 10, 10); 
+    ypos += 15;
+    doc.text("HOD/PI (for external projects only)", 21, ypos, { align: 'left' })
+    ypos += 5
     doc.setFont("times", 'bold')
 
     if (pageHeight - ypos <= 60) {
@@ -423,11 +451,18 @@ function SP_101({ formData }) {
     doc.addPage();
     doc.setFont('times', 'bold')
     doc.setFontSize(16)
-    doc.text("GEM details or GeMAR & PTS ID", pageWidth / 2 - 40, 15)
-    doc.line(pageWidth / 2 - 40, 15.7, pageWidth / 2 + 43, 15.7)
+    doc.text(" GeMAR Details", pageWidth / 2 - 20, 15)
+    doc.line(pageWidth / 2 - 20, 15.7, pageWidth / 2 + 20, 15.7)
+    doc.setFont('times', 'normal')
+    doc.setFontSize(14)
+    // doc.text(`${formData.gemarDetails}`,pageWidth / 2 - 20,20)
+    doc.setFont('times', 'bold')
+    doc.setFontSize(16)
+    doc.text(" PTS ID", pageWidth / 2 -10, 55)
+    doc.line(pageWidth / 2 -10 , 55.7, pageWidth / 2 + 10, 55.7)
     doc.setFontSize(12)
     doc.setFont('times', 'normal')
-
+    // doc.text(`${formData.ptsId}`,pageWidth / 2 - 10,60)
     doc.setFont('times', 'bold')
     doc.setFontSize(16)
     doc.text("Recommendations of the Indenter", pageWidth / 2 - 40, pageHeight / 2)
