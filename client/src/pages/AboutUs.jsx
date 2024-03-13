@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import iitrpr from "/iitrpr.jpg";
-import "./about.css";
+import "./aboutUs.css";
 
 const AboutUs = () => {
   const [isActive, setIsActive] = useState(false);

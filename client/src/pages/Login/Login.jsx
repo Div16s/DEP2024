@@ -51,7 +51,7 @@ const Login = () => {
   return (
     <div className='bg-gray-100 flex items-center justify-center h-screen'>
         <div className="bg-white p-8 rounded shadow-md w-96 h-96">
-            <h1 className="text-2xl font-semibold mb-8 mt-2">Welcome back, Login to continue!</h1>
+            <h1 className="text-2xl font-semibold mb-13 ">Welcome back, Login to continue!</h1>
             <form action="#" method="POST">
                 <div class="mb-4">
                     <label for="email" className="block text-sm font-medium text-gray-600">Email</label>
