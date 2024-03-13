@@ -17,7 +17,7 @@ const HomePage = () => {
         <p className="text-6xl  text-black mt-8 mb-10">
           Welcome to{" "}
           <div className="brown-rang">
-            {/* <Typewriter /> */}
+              <Typewriter /> 
             </div>
         </p>
         <p className="text-3xl text-black  ml-7 mr-7 mt-2 mb-5">
