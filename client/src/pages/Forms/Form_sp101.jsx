@@ -275,7 +275,7 @@ const Form_sp101 = () => {
                           className="control-label ml-4 "
                           htmlFor="name--last"
                         >
-                          itemDescription<span className="required">*</span>
+                          Description<span className="required">*</span>
                         </label>
                         <input
                           className="form-control input-sm add-button-input"

@@ -1,21 +1,15 @@
 import { jsPDF } from 'jspdf';
 import React, { useState, useContext } from 'react';
 import ContextFormSP101Data from '../../Context/ContextFormSP101Data';
-import imageUrl from '../../assets/Calendar.png';
-var testing =1;
 
 
 function SP_101({ formData }) {
     const userInfoString = localStorage.getItem("userInfo");
     const user = JSON.parse(userInfoString);
-  
 
-    const name ="rocky";
-    const department="cse";
-
-    // const name = user.name;
-    // const department = user.department;
-
+    const name = user.name;
+    const department = user.department;
+    const imageUrl = user.signatureFile;
 
    
 
