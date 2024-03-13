@@ -2,7 +2,6 @@ import Login from "./pages/Login/Login"
 import Register from "./pages/Register/Register"
 import Dashboard from "./components/Dashboard/Dashboard"
 import Error from "./pages/Error"
-import Headers from "./components/Headers"
 import {Routes,Route, BrowserRouter} from "react-router-dom"
 import 'react-toastify/dist/ReactToastify.css'
 import HomePage from "./pages/HomePage"

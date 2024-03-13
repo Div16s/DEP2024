@@ -166,7 +166,7 @@ export default function TableWithStripedRows() {
     const totalPages = Math.ceil(TABLE_ROWS.length / ROWS_PER_PAGE);
     return (
         <div className="h-screen">
-            <h1 className="mt-32 -mb-10 ml-36 text-lg text-blue-gray-900 font-semibold">
+            <h1 className="mt-32 -mb-10 ml-48 text-2xl text-blue-gray-900 font-semibold">
                 <AiOutlineFileDone size={40} />
                 APPROVED FORMS
             </h1>
