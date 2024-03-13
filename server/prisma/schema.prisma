@@ -41,7 +41,8 @@ model User {
   email      String     @unique
   role       Role       @default(FACULTY)
   department Department @default(CSE)
-  signature   String @default("")
+  signature  String     @default("")
+  forms      Form[]
   created_at DateTime   @default(now())
 }
 
@@ -53,3 +54,42 @@ model UserOTP {
   otpCreationTime DateTime @default(now())
 }
 
+//forms Model
+model Form {
+  id                        Int      @id @default(autoincrement())
+  name                      String   @default("")
+  formCategory              String   @default("SP101")
+  status                    Boolean  @default(false)
+  budgetHead                String
+  sanctionedBudget          String
+  approxCost                String
+  items                     Item[]
+  category                  String
+  budgetaryApprovalEnclosed String
+  readyForInstallation      String
+  goodForResearchPurpose    String
+  GEM                       String
+  modeOfEnquiry             String
+  nameOfSupplier            String
+  numberOfQuotation         String
+  quotationNumber           String
+  modeOfPayment             String
+  deliveryPeriod            String
+  created_at                DateTime @default(now())
+
+  // Define a field to establish a many-to-one relationship with User
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+//Item model
+model Item {
+  id              Int    @id @default(autoincrement())
+  itemDescription String
+  quantity        Int
+  price           Float
+
+  // Foreign key referencing Form
+  formId Int
+  form   Form @relation(fields: [formId], references: [id])
+}

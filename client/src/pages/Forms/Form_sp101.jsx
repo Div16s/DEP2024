@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ContextFormSP101Data from "../../Context/ContextFormSP101Data";
 import SP_101 from './SP_101';
+import { submitFormSP101 } from "../../services/Apis";
 
 
 const Form_sp101 = () => {
@@ -13,7 +14,7 @@ const Form_sp101 = () => {
   const [sanctionedBudget, setSanctionedBudget] = useState(null);
   const [approxCost, setApproxCost] = useState();
   const [items, setItems] = useState([]);
-  const [description, setDescription] = useState();
+  const [itemDescription, setItemDescription] = useState();
   const [quantity, setQuantity] = useState();
   const [price, setPrice] = useState();
   const [editingIndex, setEditingIndex] = useState(null); // Index of item being edited
@@ -30,6 +31,7 @@ const Form_sp101 = () => {
   const [quotationNumber, setQuotationNumber] = useState()
   const [modeOfPayment, setModeOfPayment] = useState()
   const [deliveryPeriod, setDeliveryPeriod] = useState();
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const navigate = useNavigate();
 
@@ -55,7 +57,6 @@ const Form_sp101 = () => {
       quotationNumber,
       modeOfPayment,
       deliveryPeriod
-
     });
   }
 
@@ -66,26 +67,87 @@ const Form_sp101 = () => {
   }, [formData]);
 
   //function for handling submit click
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Handle Submit is clicked");
+    setButtonDisabled(true);
+
+    if (budgetHead === null || sanctionedBudget === null) {
+      toast.error("All fields are required.");
+      setButtonDisabled(false);
+      return;
+    }
+    else {
+      try {
+        const userName = JSON.parse(localStorage.getItem("userInfo")).name;
+        const userId = JSON.parse(localStorage.getItem("userInfo")).id;
+        const formCategory = "SP101";
+        const inputData = {
+          userName,
+          userId,
+          formCategory,
+          budgetHead,
+          sanctionedBudget,
+          approxCost, items, category,
+          budgetaryApprovalEnclosed,
+          readyForInstallation,
+          goodForResearchPurpose,
+          GEM,
+          modeOfEnquiry,
+          nameOfSupplier,
+          numberOfQuotation,
+          quotationNumber,
+          modeOfPayment,
+          deliveryPeriod
+        }
+
+        const response = await submitFormSP101(inputData);
+
+        if (response.status === 200) {
+          toast.success(response.data.message);
+
+          // setBudgetHead("");
+          // setSanctionedBudget("");
+          // setApproxCost("");
+          // setItems("");
+          // setCategory("");
+          // setBudgetaryApprovalEnclosed("");
+          // setReadyForInstallation("");
+          // setGoodForResearchPurpose("");
+          // setGEM("");
+          // setModeOfEnquiry("");
+          // setNameOfSupplier("");
+          // setNumberOfQuotation("");
+          // setQuotationNumber("");
+          // setModeOfPayment("");
+          // setDeliveryPeriod("");
+
+        } else {
+          toast.error(response.response.data.err);
+        }
+      } catch (error) {
+        toast.error("An unexpected error occurred.");
+      } finally {
+        setButtonDisabled(false); // Reset button state here
+      }
+    }
+
   }
 
 
   // Function to handle adding new item
   const addItem = () => {
     const newItem = {
-      description: description,
+      itemDescription: itemDescription,
       quantity: quantity,
       price: price,
     };
-    if (!description || !quantity || !price) {
+    if (!itemDescription || !quantity || !price) {
       toast.error("All fields are required.");
       return;
     }
     setItems([...items, newItem]); // Append new item to items array
     // Reset input values
-    setDescription("");
+    setItemDescription("");
     setQuantity("");
     setPrice("");
   };
@@ -93,7 +155,7 @@ const Form_sp101 = () => {
   // Function to handle editing an item
   const editItem = (index) => {
     // Set input values to values of item being edited
-    setDescription(items[index].description);
+    setItemDescription(items[index].itemDescription);
     setQuantity(items[index].quantity);
     setPrice(items[index].price);
     setEditingIndex(index);
@@ -108,30 +170,30 @@ const Form_sp101 = () => {
 
   // Function to handle updating an item
   const updateItem = () => {
-    if (!description || !quantity || !price) {
+    if (!itemDescription || !quantity || !price) {
       toast.error("All fields are required.");
       return;
     }
     const updatedItems = [...items];
     updatedItems[editingIndex] = {
-      description: description,
+      itemDescription: itemDescription,
       quantity: quantity,
       price: price,
     };
     setItems(updatedItems);
     // Reset input values and editingIndex
-    setDescription("");
+    setItemDescription("");
     setQuantity(0);
     setPrice(0);
     setEditingIndex(null);
   };
   return (
     <div>
-      <div className="container-formsp101">
+      <div className="container-formsp101 mt-24">
         <div className="wizard" id="myWizard">
           <section>
             <h4 className="page-title text-center">
-              Indent for Purchases below Rs.25000
+              Indent For Purchases Below Rs.25000
             </h4>
           </section>
           <div className="wizard__progress">
@@ -213,14 +275,14 @@ const Form_sp101 = () => {
                           className="control-label ml-4 "
                           htmlFor="name--last"
                         >
-                          Description<span className="required">*</span>
+                          itemDescription<span className="required">*</span>
                         </label>
                         <input
                           className="form-control input-sm add-button-input"
                           type="text"
-                          placeholder="Description"
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
+                          placeholder="itemDescription"
+                          value={itemDescription}
+                          onChange={(e) => setItemDescription(e.target.value)}
                         />
                       </div>
                     </div>
@@ -266,7 +328,7 @@ const Form_sp101 = () => {
                         <li key={index}>
                           <div className="bg-red ml-4 mt-4 ">
                             <div className="col-sm-4 shadow mt-2">
-                              Description: {item.description}
+                              itemDescription: {item.itemDescription}
                             </div>
                             <div className="col-sm-2 mt-2 ml-2 shadow">
                               Quantity: {item.quantity}
@@ -618,6 +680,8 @@ const Form_sp101 = () => {
                   type="button"
                   className="bg-green-500 text-white btn-sm hover:bg-green-700 ml-4 next"
                   onClick={handleSubmit}
+                  disabled={isButtonDisabled}
+                  style={{ opacity: isButtonDisabled ? 0.5 : 1 }}
                 >
                   Submit
                 </button>

@@ -2,8 +2,8 @@ import React from 'react'
 
 const Form_sp102 = () => {
   return (
-    <div className='mt-20'>
-        Form_sp102
+    <div className='flex justify-center mt-32 h-screen'>
+        FORM SP102
     </div>
   )
 }

@@ -91,14 +91,14 @@ const Dashboard = () => {
   return (
 
     <>
-      <div className='flex justify-center bg-[url(iitrpr.jpg)] bg-cover'>
-        <Card className="w-2/5 mt-14">
+      <div className='flex justify-center bg-[url(iitrpr.jpg)] bg-cover h-screen'>
+        <Card className="w-2/5 mt-36">
           <CardHeader
             variant="gradient"
             color="gray"
             className="mb-2 grid h-28 place-items-center"
           >
-            <Typography variant="h3" color="white">
+            <Typography variant="h2" color="white">
               Dashboard
             </Typography>
           </CardHeader>
@@ -147,11 +147,11 @@ const Dashboard = () => {
             <div className="flex justify-between">
               {editable ? (
                 <div className='flex space-x-4'>
-                  <Button onClick={handleUpdateProfile} disabled={isButtonDisabled} variant="gradient" className='flex-1'>Update Profile</Button>
-                  <Button onClick={() => setEditable(false)} variant="gradient" className='flex-1'>Cancel</Button>
+                  <Button onClick={handleUpdateProfile} disabled={isButtonDisabled} variant="gradient" className='flex-1 text-base'>Update Profile</Button>
+                  <Button onClick={() => setEditable(false)} variant="gradient" className='flex-1 text-base'>Cancel</Button>
                 </div>
               ) : (
-                <Button onClick={() => setEditable(true)} variant="gradient" fullWidth>Edit Profile</Button>
+                <Button onClick={() => setEditable(true)} variant="gradient" className='text-base' fullWidth>Edit Profile</Button>
               )}
             </div>
           </CardFooter>

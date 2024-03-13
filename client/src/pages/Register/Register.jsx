@@ -54,9 +54,6 @@ const Register = () => {
         department: selectedDept,
       };
 
-      // console.log(selectedRole);
-      // console.log(selectedDept);
-
       const response = await sendOTP_register(userDetails);
 
       // console.log(selectedRole);

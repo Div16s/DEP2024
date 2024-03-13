@@ -1,8 +1,8 @@
 import express from "express";
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import userRouter from './routes/userRouter.js'
+import formRouter from './routes/formsRouter.js'
 
 const app = express();
 const PORT = 5000;
@@ -18,7 +18,9 @@ app.get("/",(req,res)=>{
     });
 })
 
+//routes
 app.use("/users",userRouter);
+app.use("/forms",formRouter);
 
 app.listen(PORT,()=>{
     console.log(`Backend is running on port ${PORT}`);

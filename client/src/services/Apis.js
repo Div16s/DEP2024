@@ -21,6 +21,14 @@ export const updateUser = async (data) => {
     return await commonRequest("POST",`${BACKEND_URL}/users/update`,data);
 }
 
+export const submitFormSP101 = async (data) => {
+    return await commonRequest("POST",`${BACKEND_URL}/forms/submitSP101`,data);
+}
+
 export const pendingForms = async (data) => {
     return await commonRequest("POST",`${BACKEND_URL}/forms/pending`,data);
+}
+
+export const pendingFormsAdmin = async (data) => {
+    return await commonRequest("POST",`${BACKEND_URL}/forms/pendingForms_Admin`,data);
 }
