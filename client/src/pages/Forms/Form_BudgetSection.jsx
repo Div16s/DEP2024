@@ -57,7 +57,7 @@ const Form_BudgetSection = () => {
 
   return (
     <div>
-      <div className="container-formsp101">
+      <div className="container-formsp101 mt-20 h-screen">
         <div className="wizard" id="myWizard">
           <section>
             <h4 className="page-title text-center">
