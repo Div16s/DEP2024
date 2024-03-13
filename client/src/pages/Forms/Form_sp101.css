@@ -22,6 +22,28 @@ label {
 .control-label {
   width: 132px;
 }
+.control-label {
+  display: inline-block;
+  margin: 0 0 8px;
+  font-weight: 400;
+  font-size: 14px;
+  /* font-size: 0.875rem; */
+  border: none;
+  word-wrap: break-word;
+  color: #333333;
+}
+.control-label-1 {
+  display: inline-block;
+  margin: 0 0 8px;
+  font-weight: 400;
+  font-size: 14px;
+
+  border: none;
+  word-wrap: break-word;
+  color: #333333;
+}
+
+
 .add-button-input {
   width: 200px;
   margin-left: 16px;
@@ -6295,16 +6317,6 @@ section {
   display: block;
 }
 
-.control-label {
-  display: inline-block;
-  margin: 0 0 8px;
-  font-weight: 400;
-  font-size: 14px;
-  font-size: 0.875rem;
-  border: none;
-  word-wrap: break-word;
-  color: #333333;
-}
 
 .control-label--legend {
   font-size: 15px;
@@ -7251,9 +7263,7 @@ button:hover {
   width: 100% !important;
 }
 
-button:focus {
-  outline: none !important;
-}
+
 
 .card__match-score {
   position: absolute;

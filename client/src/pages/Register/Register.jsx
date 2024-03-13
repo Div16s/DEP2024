@@ -46,13 +46,12 @@ const Register = () => {
       toast.error("Select your role");
     } else if (selectedDept === "") {
       toast.error("Select your Department");
-    }
-    else {
+    } else {
       const userDetails = {
         name: name,
         email: email,
         role: selectedRole,
-        department: selectedDept
+        department: selectedDept,
       };
 
       const response = await sendOTP_register(userDetails);
@@ -132,7 +131,9 @@ const Register = () => {
               className="mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300"
             />
           </div>
-          {/* Select department from dropdown */}
+
+          {/* select role */}
+
           <Menu
             as="div"
             className="relative inline-block text-left w-full py-2"
@@ -141,213 +142,19 @@ const Register = () => {
               for="department"
               className="bock text-sm font-medium text-gray-600"
             >
-              Department
-            </label>
-            <div>
-              <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
-                {selectedDept || "Select Your  Department"}
-                {selectedDept === "" ? <ChevronDownIcon
-                  className="ml-7  h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                /> : <div>
-                </div>}
-              </Menu.Button>
-            </div>
-
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute  right-0 z-10 mt-2 w-56 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-60 overflow-y-auto">
-                <div className="py-1">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() => handleDeptSelection("Computer Science Eng")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Computer Science Eng
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() => handleDeptSelection("Electrical Engineering")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Electrical Engineering
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() => handleDeptSelection("Mathematics & Computing")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Mathematics & Computing
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-
-                        onClick={() => handleDeptSelection("Chemical Engineering")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Chemical Engineering
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-
-                        onClick={() => handleDeptSelection("Civil Engineering")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Civil Engineering
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-
-                        onClick={() => handleDeptSelection("Biomedical Engineering")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Biomedical Engineering
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-
-                        onClick={() => handleDeptSelection("Physics Department")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Physics Department
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-
-                        onClick={() => handleDeptSelection("Artificial Intelligence")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Artificial Intelligence
-                      </a>
-                    )}
-                  </Menu.Item>
-
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-
-                        onClick={() => handleDeptSelection("Machine Learning")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Machine Learning
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-
-                        onClick={() => handleDeptSelection("Others")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Others
-                      </a>
-                    )}
-                  </Menu.Item>
-                </div>
-              </Menu.Items>
-            </Transition>
-          </Menu>
-
-
-
-
-          <Menu
-            as="div"
-            className="relative inline-block text-left w-full py-2"
-          >
-          <label
-              for="department"
-              className="bock text-sm font-medium text-gray-600"
-            >
               Role
             </label>
             <div>
               <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
                 {selectedRole || "Select your role"}
-                {selectedRole === "" ? <ChevronDownIcon
-                  className="ml-7  h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                /> : <div></div>}
+                {selectedRole === "" ? (
+                  <ChevronDownIcon
+                    className="ml-7  h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <div></div>
+                )}
               </Menu.Button>
             </div>
 
@@ -365,7 +172,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("FACULTY")}
                         className={classNames(
                           active
@@ -381,7 +187,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -397,7 +202,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -413,7 +217,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -429,7 +232,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -445,7 +247,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -461,7 +262,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -477,7 +277,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("HOD")}
                         className={classNames(
                           active
@@ -494,7 +293,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("REGISTRAR")}
                         className={classNames(
                           active
@@ -510,7 +308,6 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-
                         onClick={() => handleRoleSelection("STUDENT")}
                         className={classNames(
                           active
@@ -527,6 +324,217 @@ const Register = () => {
               </Menu.Items>
             </Transition>
           </Menu>
+
+
+          {
+          (selectedRole==="HOD" || selectedRole==="FACULTY") ?
+          
+          
+          <Menu
+            as="div"
+            className="relative inline-block text-left w-full py-2"
+          >
+            <label
+              for="department"
+              className="bock text-sm font-medium text-gray-600"
+            >
+              Department
+            </label>
+            <div>
+              <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
+                {selectedDept || "Select Your  Department"}
+                {selectedDept === "" ? (
+                  <ChevronDownIcon
+                    className="ml-7  h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </Menu.Button>
+            </div>
+
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute  right-0 z-10 mt-2 w-56 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-60 overflow-y-auto">
+                <div className="py-1">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() =>
+                          handleDeptSelection("Computer Science Eng")
+                        }
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Computer Science Eng
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() =>
+                          handleDeptSelection("Electrical Engineering")
+                        }
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Electrical Engineering
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() =>
+                          handleDeptSelection("Mathematics & Computing")
+                        }
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Mathematics & Computing
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() =>
+                          handleDeptSelection("Chemical Engineering")
+                        }
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Chemical Engineering
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() => handleDeptSelection("Civil Engineering")}
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Civil Engineering
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() =>
+                          handleDeptSelection("Biomedical Engineering")
+                        }
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Biomedical Engineering
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() =>
+                          handleDeptSelection("Physics Department")
+                        }
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Physics Department
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() =>
+                          handleDeptSelection("Artificial Intelligence")
+                        }
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Artificial Intelligence
+                      </a>
+                    )}
+                  </Menu.Item>
+
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() => handleDeptSelection("Machine Learning")}
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Machine Learning
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        onClick={() => handleDeptSelection("Others")}
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        Others
+                      </a>
+                    )}
+                  </Menu.Item>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu> :<div></div>
+}
 
           <button
             onClick={handleRegister}
