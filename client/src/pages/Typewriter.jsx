@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Typewriter = () => {
-  const word = "urchase Management System!";
+  const word = "Purchase Management System!";
   const [currentText, setCurrentText] = useState('P');
   const [currentIndex, setCurrentIndex] = useState(0);
   const typingSpeed = 100; // Milliseconds per character
@@ -15,9 +15,9 @@ const Typewriter = () => {
       }, typingSpeed);
 
       return () => clearTimeout(timeoutId);
-    }else{
-        setCurrentText('P');
-        setCurrentIndex(0);
+    } else {
+      setCurrentText('P');
+      setCurrentIndex(0);
     }
   }, [currentIndex]); // Dependency array includes only currentIndex
 

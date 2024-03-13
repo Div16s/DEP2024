@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { updateUser } from '../../services/Apis';
 import { ToastContainer, toast } from 'react-toastify'
+import './Dashboard.css';
 import {
   Card,
   CardHeader,
@@ -91,71 +92,73 @@ const Dashboard = () => {
   return (
 
     <>
-      <div className='flex justify-center bg-[url(iitrpr.jpg)] bg-cover h-screen'>
-        <Card className="w-2/5 mt-36">
-          <CardHeader
-            variant="gradient"
-            color="gray"
-            className="mb-2 grid h-28 place-items-center"
-          >
-            <Typography variant="h2" color="white">
-              Dashboard
-            </Typography>
-          </CardHeader>
-          <CardBody className="flex flex-col gap-4">
-            <div className="mb-2">
-              <label className="text-base font-medium">Name</label>
-              {editable ? (
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full text-black font-normal p-1 rounded-sm border-1 focus:outline-none focus:ring-2 ring-gray-500" />
-              ) : (
-                <div className="text-xl font-light text-black box-border h-10 w-full p-2 border-2 rounded-sm bg-neutral-50">{user.name}</div>
-              )}
-            </div>
-
-            <div className="mb-2">
-              <label className="text-base font-medium">Email</label>
-              <div className="text-xl font-light text-black box-border h-10 w-full p-2 border-2 rounded-sm bg-neutral-50 whitespace-nowrap overflow-hidden overflow-ellipsis">{user.email}</div>
-            </div>
-
-            <div className="mb-2">
-              <label className="text-base font-medium">Role</label>
-              <div className="text-xl font-light text-black box-border h-10 w-full p-2 border-2 rounded-sm bg-neutral-50 whitespace-nowrap overflow-hidden overflow-ellipsis">{user.role}</div>
-            </div>
-
-            <div className="mb-2">
-              <label className="text-base font-medium">Department</label>
-              <div className="text-xl font-light text-black box-border h-10 w-full p-2 border-2 rounded-sm bg-neutral-50 whitespace-nowrap overflow-hidden overflow-ellipsis">{user.department}</div>
-            </div>
-
-            <div className="mb-2">
-              <label className="text-base font-medium">Signature</label>
-              <br></br>
-              {editable ? (
-                <input type="file" label="Image" name='sigFile' accept='.jpeg, .png, .jpg' onChange={(e) => setSignatureFile(e.target.files[0])} className="w-full text-black text-sm p-1 rounded-sm border-1 focus:outline-none focus:ring-2 ring-gray-500" />
-              ) :
-                user.signatureFile ? (
-                  <img src={user.signatureFile} alt="Signature" className="w-28 h-24 border border-gray-300 rounded-md" />
+      <div className='dashboard-home h-screen'>
+        <div className='flex justify-center'>
+          <Card className="w-2/5 mt-36">
+            <CardHeader
+              variant="gradient"
+              color="gray"
+              className="mb-2 grid h-28 place-items-center"
+            >
+              <Typography variant="h2" color="white">
+                DASHBOARD
+              </Typography>
+            </CardHeader>
+            <CardBody className="flex flex-col gap-4">
+              <div className="mb-2">
+                <label className="text-base font-medium">Name</label>
+                {editable ? (
+                  <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full text-black font-normal p-1 rounded-sm border-1 focus:outline-none focus:ring-2 ring-gray-500" />
                 ) : (
-                  <div className="w-28 h-24 border border-gray-300 flex items-center justify-center rounded-md">
-                    <span className="text-gray-500">Signature</span>
-                  </div>
+                  <div className="text-xl font-light text-black box-border h-10 w-full p-2 border-2 rounded-sm bg-neutral-50">{user.name}</div>
                 )}
-            </div>
+              </div>
 
-          </CardBody>
-          <CardFooter className="pt-0">
-            <div className="flex justify-between">
-              {editable ? (
-                <div className='flex space-x-4'>
-                  <Button onClick={handleUpdateProfile} disabled={isButtonDisabled} variant="gradient" className='flex-1 text-base'>Update Profile</Button>
-                  <Button onClick={() => setEditable(false)} variant="gradient" className='flex-1 text-base'>Cancel</Button>
-                </div>
-              ) : (
-                <Button onClick={() => setEditable(true)} variant="gradient" className='text-base' fullWidth>Edit Profile</Button>
-              )}
-            </div>
-          </CardFooter>
-        </Card>
+              <div className="mb-2">
+                <label className="text-base font-medium">Email</label>
+                <div className="text-xl font-light text-black box-border h-10 w-full p-2 border-2 rounded-sm bg-neutral-50 whitespace-nowrap overflow-hidden overflow-ellipsis">{user.email}</div>
+              </div>
+
+              <div className="mb-2">
+                <label className="text-base font-medium">Role</label>
+                <div className="text-xl font-light text-black box-border h-10 w-full p-2 border-2 rounded-sm bg-neutral-50 whitespace-nowrap overflow-hidden overflow-ellipsis">{user.role}</div>
+              </div>
+
+              <div className="mb-2">
+                <label className="text-base font-medium">Department</label>
+                <div className="text-xl font-light text-black box-border h-10 w-full p-2 border-2 rounded-sm bg-neutral-50 whitespace-nowrap overflow-hidden overflow-ellipsis">{user.department}</div>
+              </div>
+
+              <div className="mb-2">
+                <label className="text-base font-medium">Signature</label>
+                <br></br>
+                {editable ? (
+                  <input type="file" label="Image" name='sigFile' accept='.jpeg, .png, .jpg' onChange={(e) => setSignatureFile(e.target.files[0])} className="w-full text-black text-sm p-1 rounded-sm border-1 focus:outline-none focus:ring-2 ring-gray-500" />
+                ) :
+                  user.signatureFile ? (
+                    <img src={user.signatureFile} alt="Signature" className="w-28 h-24 border border-gray-300 rounded-md" />
+                  ) : (
+                    <div className="w-28 h-24 border border-gray-300 flex items-center justify-center rounded-md">
+                      <span className="text-gray-500">Signature</span>
+                    </div>
+                  )}
+              </div>
+
+            </CardBody>
+            <CardFooter className="pt-0">
+              <div className="flex justify-between">
+                {editable ? (
+                  <div className='flex space-x-4'>
+                    <Button onClick={handleUpdateProfile} disabled={isButtonDisabled} variant="gradient" className='flex-1 text-base'>Update Profile</Button>
+                    <Button onClick={() => setEditable(false)} variant="gradient" className='flex-1 text-base'>Cancel</Button>
+                  </div>
+                ) : (
+                  <Button onClick={() => setEditable(true)} variant="gradient" className='text-base' fullWidth>Edit Profile</Button>
+                )}
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
       <ToastContainer />
     </>
