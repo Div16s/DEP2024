@@ -1,0 +1,44 @@
+
+
+.home{
+
+    background-color: #fcf5e7;
+}
+.heading-main-body {
+    margin-left: 4rem;
+    margin-top: 18px;
+    font-size: 32px;
+}
+
+.home-main{
+
+    line-height:15px;
+    height:80vh;
+
+    margin-bottom: 25px;
+}
+
+.brown-rang{
+    color:#9b4819;
+}
+
+.features-main-body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .feature {
+    width: 30%;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .feature:hover {
+    transform: translateY(-5px);
+  }
+  
