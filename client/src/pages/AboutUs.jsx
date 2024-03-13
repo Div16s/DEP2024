@@ -27,7 +27,7 @@ const AboutUs = () => {
   return (
 
 
-    <div className="home1 ">
+    <div className="home1 mt-20">
     <h2 className="text-6xl text-center text-black mt-14 mb-0">Teams</h2>
     <div className="flex flex-col justify-center  bg-cover bg-center">
       <div>
