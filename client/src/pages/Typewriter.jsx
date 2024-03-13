@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Typewriter = () => {
-  const word = "Purchase Management System!";
+  const word = "urchase Management System!";
   const [currentText, setCurrentText] = useState('P');
   const [currentIndex, setCurrentIndex] = useState(0);
   const typingSpeed = 100; // Milliseconds per character

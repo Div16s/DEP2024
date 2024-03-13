@@ -1,19 +1,48 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import { Type } from "react-toastify/dist/utils";
 import "./HomePage.css";
 import Typewriter from "../Typewriter";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
+
 const HomePage = () => {
+  // Scroll function to move to the target section
+  const scrollToSection = () => {
+    const section = document.getElementById("target-section");
+    window.scrollTo({ top: section.offsetTop, behavior: "smooth" });
+  };
+
   return (
     <div className="home">
 
-      <img
+      {/* <img
         src="iitrpr.jpg"
         alt="Homepage"
         className=" homepage-image w-3000 h-3000 mt-4"
-      />
+      /> */}
 
-      <div className="home-main flex-col text-center">
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        <img
+          src="iitrpr.jpg"
+          alt="Homepage"
+          className="homepage-image w-3000 h-1000 -mt-8"
+        />
+        <div className="flex flex-col items-center justify-center mt-32" style={{
+          position: "absolute",
+          top: "20%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          textAlign: "center",
+          color: "#fff",
+          fontSize: "40px",
+          fontWeight: "bold",
+        }}>
+          <img src="iitrpr_logo.png" className="h-36"/>
+          Indian Institute of Technology, Ropar
+          <IoIosArrowDropdownCircle className="mt-10 animate-bounce cursor-pointer" onClick={scrollToSection}/>
+        </div>
+      </div>
+
+      <div className="home-main flex-col text-center" id="target-section">
         <p className="text-6xl  text-black mt-8 mb-10">
           Welcome to{" "}
           <div className="brown-rang">
@@ -29,9 +58,9 @@ const HomePage = () => {
 
         <br />
         <br /><br />
-        <p className=" font-bold text-left heading-main-body  mt-13">Features of Our Purchase Management System:</p>
+        <p className=" font-bold text-left heading-main-body  mt-13">Features Of Our Purchase Management System</p>
         <br />
-        <br /><br /><br /><br /><br />
+        <br /><br /><br />
         <div className="features-main-body">
           <div className="feature">
             <div className="sub-heading-main-body">User-Friendly Interface</div>
