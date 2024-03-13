@@ -35,6 +35,11 @@
 	height: 330px;
 }
 
+.card-details-container{
+	margin-top: 36px;
+	margin-left: 10px;
+}
+
 #profile {
 	cursor: grabbing;
 	width: 400px;
@@ -57,7 +62,7 @@
 	filter: sepia(.25);
 }
 
-h1 {
+/* h1 {
 	color: rgba(38, 50, 56, 1);
 	font-family: 'Roboto Condensed', sans-serif;
 	font-size: 36px;
@@ -65,9 +70,9 @@ h1 {
 	text-align: center;
 	position: relative;
 	top: 48px;
-}
+} */
 
-p {
+/* p {
 	color: rgba(38, 50, 56, .87);
 	font-family: 'Roboto Condensed', sans-serif;
 	font-size: 16px;
@@ -75,7 +80,7 @@ p {
 	text-align: center;
 	position: relative;
 	top: 56px;
-}
+} */
 
 a {
 	color: rgba(255, 255, 255, 1);
@@ -91,7 +96,7 @@ a:hover {
 	text-align: center;
 	margin: 0 auto;
 	position: relative;
-	top: 86px;
+	top: 36px;
 	background: rgba(38, 50, 56, 1);
 	width: 32px;
 	height: 32px;

@@ -41,16 +41,22 @@ const AboutUs = () => {
               src="Doodhnath.jpeg"
               alt="Doodh Nath"
             />
+            <div className="card-details-container">
             <h1>Doodh Nath Tiwari</h1>
             <p>+91 6203087513</p>
             <p>Front-end Web Developer</p>
+            </div>
+            
             <div className={`info ${isActive ? "active" : ""}`}>
+              
               <i className="fa fa-info fa-1x block" onClick={toggleActive}></i>
               <i
                 className="fa fa-angle-down fa-2x block"
                 onClick={toggleActive}
               ></i>
+              
               <p>
+
                 I'm a  enthusiastic web developer and 
                 Currently Pursuing my B Tech @{" "}
                <a href="https://www.iitrpr.ac.in/" target="_blank">
@@ -93,9 +99,11 @@ const AboutUs = () => {
               src="Divyankar.jpeg"
               alt="User"
             />
+            <div className="card-details-container">
             <h1>Divyankar Shah</h1>
             <p>+91 9569691304</p>
             <p>Front-end Web Developer</p>
+            </div>
             <div className={`info ${isActive1 ? "active" : ""}`}>
               <i className="fa fa-info fa-1x block" onClick={toggleActive1}></i>
               <i
@@ -146,14 +154,16 @@ const AboutUs = () => {
           <div id="blur">
             <div id="color"></div>
           </div>
-          <div id="profile">
+          < div id="profile">
             <img
               src="Niroopma.jpg"
               alt="User"
             />
+           <div className="card-details-container">
             <h1>Niroopma Verma</h1>
             <p> +91 7705834401</p>
             <p>Front-end Web Developer</p>
+            </div>
             <div className={`info ${isActive2 ? "active" : ""}`}>
               <i className="fa fa-info fa-1x block" onClick={toggleActive2}></i>
               <i
@@ -202,9 +212,11 @@ const AboutUs = () => {
               src="Shashank.png"
               alt="User"
             />
+            <div className="card-details-container">
             <h1>Shashank Kumar</h1>
             <p> +91 7764833505</p>
             <p>Front-end Web Developer</p>
+            </div>
             <div className={`info ${isActive3 ? "active" : ""}`}>
               <i className="fa fa-info fa-1x block" onClick={toggleActive3}></i>
               <i
