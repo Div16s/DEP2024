@@ -6,7 +6,8 @@ module.exports = withMT({
     extend: {},
     fontFamily: {
        header: ["Poppins", "sans-serif"],
-       custom: ["Roboto Condensed", "sans-serif"]
+       custom: ["Roboto Condensed", "sans-serif"],
+       figtree: ["Figtree", "sans-serif"]
     },
   },
   plugins: [],

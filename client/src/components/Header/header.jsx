@@ -64,7 +64,7 @@ function StickyNavbar() {
           >
             <Link
               to={"/forms/SP101"}
-              className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:bg-gray-100 shadow-sm"
+              className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm"
             >
               SP101 FORM
             </Link>
@@ -77,7 +77,7 @@ function StickyNavbar() {
           >
             <Link
               to={"/forms/SP102"}
-              className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:bg-gray-100 shadow-sm"
+              className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm"
             >
               SP102 FORM
             </Link>
@@ -88,7 +88,7 @@ function StickyNavbar() {
             color="blue-gray"
             className="p-1 font-normal"
           >
-            <Link to={"/approvedForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:bg-gray-100 shadow-sm">
+            <Link to={"/approvedForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm">
               APPROVED FORMS
             </Link>
           </Typography>
@@ -98,7 +98,7 @@ function StickyNavbar() {
             color="blue-gray"
             className="p-1 font-normal"
           >
-            <Link to={"/pendingForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:bg-gray-100 shadow-sm">
+            <Link to={"/pendingForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm">
               PENDING FORMS
             </Link>
           </Typography>
@@ -112,7 +112,7 @@ function StickyNavbar() {
             color="blue-gray"
             className="p-1 font-normal"
           >
-            <Link to={"/approvedForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:bg-gray-100 shadow-sm">
+            <Link to={"/approvedForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm">
               APPROVED FORMS
             </Link>
           </Typography>
@@ -122,7 +122,7 @@ function StickyNavbar() {
             color="blue-gray"
             className="p-1"
           >
-            <Link to={"/pendingForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:bg-gray-100 shadow-sm">
+            <Link to={"/pendingForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm">
               PENDING FORMS
             </Link>
           </Typography>
@@ -141,15 +141,16 @@ function StickyNavbar() {
                 variant="text"
                 size="md"
                 onClick={(e) =>{e.stopPropagation(); setOpenNav(!openNav)}}
-                className="relative z-10 rounded-md overflow-hidden hover:bg-white bg-gray-200 text-black text-base shadow-md"
+                className="relative z-10 rounded-full py-4 px-4 overflow-hidden hover:bg-white bg-gray-100 text-black text-base shadow-md"
               >
                 <h1 className="font-bold">{user.name.charAt(0).toUpperCase() + user.name.charAt(1).toUpperCase()}</h1>
               </Button>
               {openNav && (
-                <div className="absolute right-0 mt-1 w-30 py-2 bg-white text-black font-normal rounded shadow-lg" style={{ fontSize: "12px" }}>
-                  <Link to="/dashboard" className="block px-4 py-2 hover:bg-gray-100">Dashboard</Link>
-                  <button onClick={handleLogout} className="flex justify-around w-full text-left px-4 py-2 hover:bg-gray-100 focus:outline-none">
-                    <h1 className="-mt-0.5">Logout</h1>
+                <div className="absolute right-0 mt-1 w-36 h-28 py-2 bg-white text-black font-normal rounded shadow-lg" style={{ fontSize: "12px" }}>
+                  <Link to="/dashboard" className="block px-4 py-2 hover:text-black hover:bg-gray-100">Dashboard</Link>
+                  <hr className="my-1 border-gray-300"></hr>
+                  <button onClick={handleLogout} className="flex justify-around mt-2 w-full text-left px-4 py-2 hover:bg-gray-100 focus:outline-none">
+                    <h1 className="-mt-0">Logout</h1>
                     <FiLogOut />
                   </button>
                 </div>
@@ -162,10 +163,10 @@ function StickyNavbar() {
       return (
         <div className="flex items-center gap-x-1">
           <Button variant="text" size="lg">
-            <Link className="text-white" to={"/login"} style={{fontSize:"18px"}} >Login</Link>
+            <Link className="text-white text-xl font-figtree" to={"/login"}>Login</Link>
           </Button>
-          <Button variant="text" size="lg">
-            <Link className="text-white" to={"/signup"} style={{fontSize:"18px"}}>Signup</Link>
+          <Button variant="filled" size="lg">
+            <Link className="text-white text-xl font-figtree" to={"/signup"}>Signup</Link>
           </Button>
         </div>
       );
@@ -179,7 +180,7 @@ function StickyNavbar() {
           <Typography
             as="a"
             href="/"
-            className="mr-4 cursor-pointer p-2 text-4xl font-bold font-header rounded-md text-#fff hover:text-white"
+            className="mr-4 cursor-pointer p-2 text-4xl font-bold font-header rounded-md text-#fff hover:text-gray-300"
           >
             PURCHASE MANAGEMENT
           </Typography>

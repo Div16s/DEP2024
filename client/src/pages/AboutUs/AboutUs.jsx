@@ -25,7 +25,7 @@ const AboutUs = () => {
 
   return (
     <div className="home1 mt-20">
-      <h2 className="text-6xl text-center text-white bg-blue-gray-900 mt-14 mb-0">TEAM</h2>
+      <h2 className="text-6xl text-center text-blue-gray-900 font-header font-bold mt-10 mb-0">TEAM</h2>
       <div className="flex flex-col justify-center bg-cover bg-center">
         <div>
           <div className="flex flex-row">
@@ -96,25 +96,25 @@ const AboutUs = () => {
                   src="Divyankar.jpeg"
                   alt="User"
                 />
-                <div className="card-details-container">
-                  <h1>Divyankar Shah</h1>
-                  <p>+91 9569691304</p>
-                  <p>Full-Stack Developer</p>
+                <div className="flex flex-col items-center justify-center card-details-container">
+                  <h1 className="font-semibold">Divyankar Shah</h1>
+                  <p className="font-semibold">+91 9569691304</p>
+                  <p className="font-semibold">Full-Stack Developer</p>
                 </div>
                 <div className={`info ${isActive1 ? "active" : ""}`}>
-                  <i className="fa fa-info fa-1x block" onClick={toggleActive1}></i>
+                  <i className="-mb-2 fa fa-info fa-1x block" onClick={toggleActive1}></i>
                   <i
-                    className="fa fa-angle-down fa-2x block"
+                    className="-mb-2 fa fa-angle-down fa-2x block"
                     onClick={toggleActive1}
                   ></i>
-                  <p>
+                  <p className="-mb-4">
                     In short, I spend my earthly time striving to create some darned
                     awesome UI designs, and also develop a few. Student @{" "}
                     <a href="https://www.iitrpr.ac.in/" target="_blank">IIT Ropar
                     </a>
                     .
                   </p>
-                  <p>Find me on:</p>
+                  <p className="-mb-4">Find me on:</p>
                   <a
                     className="link"
                     href="https://twitter.com/Masquetina/"

@@ -36,9 +36,9 @@ const HomePage = () => {
           fontSize: "40px",
           fontWeight: "bold",
         }}>
-          <img src="iitrpr_logo.png" className="h-36"/>
+          <img src="iitrpr_logo.png" className="h-36" />
           Indian Institute of Technology, Ropar
-          <IoIosArrowDropdownCircle className="mt-10 animate-bounce cursor-pointer" onClick={scrollToSection}/>
+          <IoIosArrowDropdownCircle className="mt-10 animate-bounce cursor-pointer" onClick={scrollToSection} />
         </div>
       </div>
 

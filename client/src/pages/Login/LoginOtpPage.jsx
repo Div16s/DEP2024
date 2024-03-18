@@ -4,12 +4,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { verifyUser } from '../../services/Apis'
 import { UserContext } from '../../UserContext'
 import {sendOTP} from '../../services/Apis'
+import { Button } from '@material-tailwind/react'
 
 const LoginOtpPage = () => {
     const [otp, setOTP] = useState("");
-    const [isButtonDisabled, setButtonDisabled] = useState(false);
-    const [isResendButtonDisabled, setResendButtonDisabled] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(60); // 1 minutes in seconds
+    const [loading, setLoading] = useState(false);
+    const [resendLoading, setResendLoading] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -23,7 +24,8 @@ const LoginOtpPage = () => {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        setButtonDisabled(true);
+        if(loading) return;
+        setLoading(true);
         if (otp === "") {
             toast.error("Please enter your OTP");
         }
@@ -62,12 +64,13 @@ const LoginOtpPage = () => {
                 toast.error(response.response.data.err);
             }
         }
-        setButtonDisabled(false);
+        setLoading(false);
     }
 
     const handleResend = async (e) => {
         e.preventDefault();
-        setResendButtonDisabled(true);
+        if(resendLoading) return;
+        setResendLoading(true);
         const data = {
             email:location.state
         };
@@ -84,34 +87,34 @@ const LoginOtpPage = () => {
           console.error("Error resending OTP:", error);
         }
 
-        setResendButtonDisabled(false);
+        setResendLoading(false);
       };
 
     return (
         <div className='bg-gray-100 flex items-center justify-center h-screen'>
-            <div className="bg-white p-8 rounded shadow-md w-96 h-96">
-                <h1 className="text-2xl font-semibold mb-8 mt-2">VERIFY YOUR OTP</h1>
+            <div className="bg-white p-8 rounded shadow-md" style={{width:"300px", height:"300px"}}>
+                <h1 className="text-4xl font-semibold font-header mb-8 mt-2">VERIFY YOUR OTP</h1>
                 {/* Display OTP expiry message or countdown */}
                 {timeRemaining > 0 ? (
-                    <p className="text-gray-600 text-sm mb-4">
+                    <p className="text-white text-xl bg-red-300 p-1 w-48 rounded-sm mb-4">
                         Time remaining: {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
                     </p>
                 ) : (
-                    <p className="text-red-600 text-sm mb-4">OTP has expired. Please request a new one.</p>
+                    <p className="text-red-600 text-xl mb-4">OTP has expired. Please request a new one.</p>
                 )}
                 <form method="POST">
                     <div>
                         <div class="mb-4">
-                            <input onChange={(e) => { setOTP(e.target.value) }} type="text" id="otp" name="otp" placeholder='Enter your OTP here...' className="mt-1 p-2 w-full border focus:outline-zinc-400 rounded-md" />
+                            <input onChange={(e) => { setOTP(e.target.value) }} type="text" id="otp" name="otp" placeholder='Enter your OTP here...' className="mt-1 p-2 w-full border focus:outline-none rounded-md" />
                         </div>
                     </div>
-                    <div>
-                        <button onClick={handleSubmit} disabled={isButtonDisabled} type="submit" className="bg-blue-500 text-white font-semibold m-auto p-2 pl-5 pr-5 rounded-full hover:bg-blue-600 shadow-sm shadow-gray-500 focus:outline-none focus:ring focus:border-blue-300" style={{ opacity: isButtonDisabled ? 0.5 : 1 }}>
+                    <div className='flex gap-4'>
+                        <Button onClick={handleSubmit} loading={loading} type="submit" size='lg' variant='gradient' color='blue' className='text-lg font-figtree'>
                             Submit
-                        </button>
-                        <button onClick={handleResend} disabled={isResendButtonDisabled} className="bg-green-500 ml-2 text-white font-semibold p-2 pr-5 pl-5 rounded-full hover:bg-green-600 shadow-sm shadow-gray-500 focus:outline-none focus:ring focus:border-green-300" style={{ opacity: isResendButtonDisabled ? 0.5 : 1 }}>
+                        </Button>
+                        <Button onClick={handleResend} loading={resendLoading} size='lg' variant='gradient' color='green' className='text-lg font-figtree'>
                             Resend OTP
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>

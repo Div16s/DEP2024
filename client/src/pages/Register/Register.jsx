@@ -3,7 +3,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { ToastContainer, toast } from "react-toastify";
 import { registerUser, sendOTP_register } from "../../services/Apis";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
+import { Button } from "@material-tailwind/react";
 
 // for dropdown
 function classNames(...classes) {
@@ -16,7 +17,7 @@ const Register = () => {
   let [selectedRole, setSelectedRole] = useState("");
   let [selectedDept, setSelectedDept] = useState("");
 
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const[loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRoleSelection = (role) => {
@@ -27,15 +28,13 @@ const Register = () => {
     setSelectedDept(dept);
   };
 
-  //logic for showing/hiding password
-  // function handleClick(e){
-  //   e.preventDefault();
-  //   setShowPass(!showPass);
-  // }
   //validation checks
   async function handleRegister(e) {
     e.preventDefault();
-    setButtonDisabled(true);
+
+    if(loading) return;
+    setLoading(true);
+
     if (name === "") {
       toast.error("Enter your name");
     } else if (email === "") {
@@ -56,9 +55,6 @@ const Register = () => {
 
       const response = await sendOTP_register(userDetails);
 
-      // console.log(selectedRole);
-      // console.log(selectedDept);
-
       if (response.status === 200) {
         toast.success(response.data.message);
         setTimeout(function () {
@@ -71,34 +67,20 @@ const Register = () => {
       } else {
         toast.error(response.response.data.err);
       }
-      setButtonDisabled(false);
     }
+    setLoading(false);
   }
 
-  // console.log(firstName);
-  // console.log(lastName);
-  // console.log(email);
-  // console.log(password);
-
-  // <div class="mb-4">
-  //                   <label for="password" className="block text-sm font-medium text-gray-600">Password</label>
-  //                   <input onChange={(e)=>{setPassword(e.target.value)}} type={!showPass?"password":"text"} id="password" name="password" placeholder='Enter your password here...' className="mt-1 p-2 w-full border rounded-md" />
-
-  //                   <button onClick={handleClick} className='bg-gray-300 text-blue-900 font-bold w-12 flex justify-center items-center border rounded-sm mt-1'>
-  //                     {!showPass?"Show":"Hide"}
-  //                   </button>
-
-  //               </div>
-
   return (
-    <div className="bg-gray-100 flex items-center justify-center h-screen">
-      <div className="bg-white p-8 rounded shadow-md w-96 h-166">
-        <h1 className="text-2xl font-semibold mb-4">Hi there, Register</h1>
-        <form action="#" method="POST">
+    <div className="bg-gray-100 flex items-center justify-center mt-4 h-screen">
+      <div className="bg-white p-8 rounded shadow-md" style={{ width: "350px", height: "450px" }}>
+        <h1 className="text-4xl font-semibold mb-1">Hi there,</h1>
+        <h1 className="text-4xl font-semibold mb-4">Signup to continue!</h1>
+        <form method="POST">
           <div class="mb-4">
             <label
               for="name"
-              className="block text-sm font-medium text-gray-600"
+              className="-ml-1 text-2xl font-medium text-gray-600"
             >
               Name
             </label>
@@ -110,13 +92,13 @@ const Register = () => {
               id="name"
               name="name"
               placeholder="Enter your name here..."
-              className="mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300"
+              className="mt-1 p-2 w-full text-lg border rounded-md focus:outline-none"
             />
           </div>
-          <div class="mb-4">
+          <div class="mb-2">
             <label
               for="email"
-              className="block text-sm font-medium text-gray-600"
+              className="block -ml-1 text-2xl font-medium text-gray-600"
             >
               Email
             </label>
@@ -128,7 +110,7 @@ const Register = () => {
               id="email"
               name="email"
               placeholder="Enter your email here..."
-              className="mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300"
+              className="mt-1 p-2 w-full text-lg border rounded-md"
             />
           </div>
 
@@ -140,20 +122,18 @@ const Register = () => {
           >
             <label
               for="department"
-              className="bock text-sm font-medium text-gray-600"
+              className="-ml-1 text-2xl font-medium text-gray-600"
             >
               Role
             </label>
             <div>
-              <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
+              <Menu.Button className="inline-flex justify-between mt-1 p-2 w-full text-lg font-medium border rounded-md outline outline-1 outline-gray-300 bg-white px-2 py-2  hover:bg-gray-100">
                 {selectedRole || "Select your role"}
-                {selectedRole === "" ? (
+                {!selectedRole && (
                   <ChevronDownIcon
-                    className="ml-7  h-5 w-5 text-gray-400"
+                    className="mr-4  h-6 w-5 text-gray-600"
                     aria-hidden="true"
                   />
-                ) : (
-                  <div></div>
                 )}
               </Menu.Button>
             </div>
@@ -167,7 +147,7 @@ const Register = () => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute  right-0 z-10 mt-2 w-56 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-60 overflow-y-auto">
+              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-60 overflow-y-auto">
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (
@@ -327,216 +307,214 @@ const Register = () => {
 
 
           {
-          (selectedRole==="HOD" || selectedRole==="FACULTY") ?
-          
-          
-          <Menu
-            as="div"
-            className="relative inline-block text-left w-full py-2"
-          >
-            <label
-              for="department"
-              className="bock text-sm font-medium text-gray-600"
-            >
-              Department
-            </label>
-            <div>
-              <Menu.Button className="inline-flex w-full justify-left gap-x-1.5 mt-1 p-2 w-full text-sm border rounded-md focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-50">
-                {selectedDept || "Select Your  Department"}
-                {selectedDept === "" ? (
-                  <ChevronDownIcon
-                    className="ml-7  h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <div></div>
-                )}
-              </Menu.Button>
-            </div>
+            (selectedRole === "HOD" || selectedRole === "FACULTY") ?
 
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute  right-0 z-10 mt-2 w-56 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-60 overflow-y-auto">
-                <div className="py-1">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() =>
-                          handleDeptSelection("Computer Science Eng")
-                        }
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Computer Science Eng
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() =>
-                          handleDeptSelection("Electrical Engineering")
-                        }
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Electrical Engineering
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() =>
-                          handleDeptSelection("Mathematics & Computing")
-                        }
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Mathematics & Computing
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() =>
-                          handleDeptSelection("Chemical Engineering")
-                        }
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Chemical Engineering
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() => handleDeptSelection("Civil Engineering")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Civil Engineering
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() =>
-                          handleDeptSelection("Biomedical Engineering")
-                        }
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Biomedical Engineering
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() =>
-                          handleDeptSelection("Physics Department")
-                        }
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Physics Department
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() =>
-                          handleDeptSelection("Artificial Intelligence")
-                        }
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Artificial Intelligence
-                      </a>
-                    )}
-                  </Menu.Item>
 
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() => handleDeptSelection("Machine Learning")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Machine Learning
-                      </a>
+              <Menu
+                as="div"
+                className="relative inline-block text-left w-full py-2"
+              >
+                <label
+                  for="department"
+                  className="bock -ml-1 text-2xl font-semibold text-gray-600"
+                >
+                  Department
+                </label>
+                <div>
+                  <Menu.Button className="inline-flex justify-between mt-1 p-2 w-full text-lg border focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-100">
+                    {selectedDept || "Select Your  Department"}
+                    {!selectedDept && (
+                      <ChevronDownIcon
+                        className="mr-2  h-7 w-5 font-bold text-gray-600"
+                        aria-hidden="true"
+                      />
                     )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() => handleDeptSelection("Others")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        Others
-                      </a>
-                    )}
-                  </Menu.Item>
+                  </Menu.Button>
                 </div>
-              </Menu.Items>
-            </Transition>
-          </Menu> :<div></div>
-}
 
-          <button
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute  right-0 z-10 mt-2 w-56 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-60 overflow-y-auto">
+                    <div className="py-1">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("Computer Science Eng")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Computer Science Eng
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("Electrical Engineering")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Electrical Engineering
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("Mathematics & Computing")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Mathematics & Computing
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("Chemical Engineering")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Chemical Engineering
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() => handleDeptSelection("Civil Engineering")}
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Civil Engineering
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("Biomedical Engineering")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Biomedical Engineering
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("Physics Department")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Physics Department
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("Artificial Intelligence")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Artificial Intelligence
+                          </a>
+                        )}
+                      </Menu.Item>
+
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() => handleDeptSelection("Machine Learning")}
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Machine Learning
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() => handleDeptSelection("Others")}
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            Others
+                          </a>
+                        )}
+                      </Menu.Item>
+                    </div>
+                  </Menu.Items>
+                </Transition>
+              </Menu> : <div></div>
+          }
+
+          {/* <button
             onClick={handleRegister}
             disabled={isButtonDisabled}
             type="submit"
@@ -544,13 +522,16 @@ const Register = () => {
             style={{ opacity: isButtonDisabled ? 0.5 : 1 }}
           >
             Register
-          </button>
+          </button> */}
+          <Button onClick={handleRegister} loading = {loading} variant="gradient" size="lg" color="blue" className="mt-4 text-lg font-figtree">
+            Signup
+          </Button>
           <div className="mb-4 mt-2">
-            <p className="text-gray-400 font-normal">
+            <p className="text-red-400 font-normal">
               Already have an account?{" "}
               <NavLink
                 to={"/login"}
-                className={"font-bold hover:underline hover:text-blue-400"}
+                className={"font-bold hover:underline text-blue-300 hover:text-blue-600"}
               >
                 Login!
               </NavLink>

@@ -1,5 +1,5 @@
 .home1{
-    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/225748/MD_background.png) no-repeat center center fixed;
+    background: url(AboutUs_bg4.jpg) no-repeat center center fixed;
 	background-size: cover;
 	overflow: hidden;
 	cursor: default;
@@ -16,7 +16,7 @@
 }
 
 #blur {
-	background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/225748/MD_background.png) no-repeat center center fixed;
+	background: url(AboutUs_bg4.jpg) no-repeat center center fixed;
 	background-size: cover;
 	width: 430px;
 	height: 330px;
