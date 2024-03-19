@@ -3,10 +3,21 @@ import { MdOutlinePendingActions } from "react-icons/md";
 import { pendingForms, pendingFormsAdmin } from "../../services/Apis";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
+import { useDisclosure } from "@chakra-ui/react"
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+} from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react"
+import SP_101_PDF_URL_Generator from '../Forms/SP_101_PDF_URL_Generator';
 
 const TABLE_HEAD = ["Form ID", "User", "Budget Head", "Date", "Category"];
 
-// Assuming you have a function to fetch pending forms for a particular user from the backend
 const fetchPendingFormsForUser = async (userId) => {
     // Make an API request to fetch pending forms data for the specified user ID
     // Replace the URL with your actual backend endpoint
@@ -46,8 +57,17 @@ const fetchPendingFormsForAdmin = async (username) => {
 
 export default function PendingForms() {
     const [userPendingForms, setUserPendingForms] = useState([]);
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const userId = JSON.parse(localStorage.getItem("userInfo")).id;
     const role = JSON.parse(localStorage.getItem("userInfo")).role;
+    const [pdfUrl, setPdfUrl] = useState(null);
+    const department = JSON.parse(localStorage.getItem("userInfo")).department;
+
+    // Callback function to handle PDF generation
+    const handlePdfGenerated = (url) => {
+        setPdfUrl(url);
+    }
+
     useEffect(() => {
         if (role === "HOD") {
             // Fetch pending forms for the specified user ID when the component mounts
@@ -98,8 +118,10 @@ export default function PendingForms() {
                             </tr>
                         </thead>
                         <tbody>
-                            {userPendingForms && userPendingForms.map(({ id, name, budgetHead, created_at, formCategory, formId }, index) => (
+                            {userPendingForms && userPendingForms.map(({ id, name, budgetHead, date, formCategory, formId }, index) => (
+                                
                                 <tr key={id} className={index % 2 === 0 ? "even:bg-blue-gray-50/50" : ""}>
+                                <SP_101_PDF_URL_Generator pendingForms={userPendingForms} department={department} onPdfGenerated={handlePdfGenerated} />
                                     <td className="p-4">
                                         <Typography variant="small" color="blue-gray" className="text-base font-normal">
                                             {id}
@@ -117,7 +139,7 @@ export default function PendingForms() {
                                     </td>
                                     <td className="p-4">
                                         <Typography variant="small" color="blue-gray" className="text-base font-normal">
-                                            {new Date(created_at).toLocaleDateString('en-GB')}
+                                            {date}
                                         </Typography>
                                     </td>
                                     <td className="p-4">
@@ -127,8 +149,25 @@ export default function PendingForms() {
                                     </td>
                                     {role === 'HOD' && (
                                         <td className="p-4 flex items-center">
-                                            <button className="bg-blue-300 text-base text-white px-2 py-1 rounded-md hover:bg-blue-400 mr-2"
-                                                onClick={() => viewForm(formId)}>View</button>
+                                            <button
+                                                class="select-none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                                type="button"
+                                                onClick={onOpen}>
+                                                View
+                                            </button>
+                                            <Modal size={"full"} isOpen={isOpen} onClose={onClose}>
+                                                <ModalOverlay />
+                                                <ModalContent>
+                                                    <ModalHeader>PDF Viewer</ModalHeader>
+                                                    <ModalCloseButton />
+                                                    <ModalBody>
+                                                        <iframe src={pdfUrl} width="100%" height="500px"></iframe> {/* Render PDF in an iframe */}
+                                                    </ModalBody>
+                                                    <ModalFooter>
+                                                        <Button colorScheme="blue" onClick={onClose}>Close</Button>
+                                                    </ModalFooter>
+                                                </ModalContent>
+                                            </Modal>
                                             <button className="bg-green-300 text-base text-white px-2 py-1 rounded-md hover:bg-green-400 mr-2"
                                                 onClick={() => approveForm(formId)}>Approve</button>
                                             <button className="bg-red-400 text-base text-white px-2 py-1 rounded-md hover:bg-red-600"

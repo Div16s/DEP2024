@@ -242,6 +242,7 @@ const verifyOTP_userLogin = async (req, res) => {
                 email: existingUser.email,
                 role: existingUser.role,
                 department: existingUser.department,
+                signatureFile: existingUser.signature || "",
                 userToken: token
             });
         }

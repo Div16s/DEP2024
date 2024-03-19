@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ContextFormSP101Data from "../../Context/ContextFormSP101Data";
 import SP_101 from './SP_101';
 import { submitFormSP101 } from "../../services/Apis";
+import { Button } from "@material-tailwind/react";
 
 
 const Form_sp101 = () => {
@@ -29,13 +30,28 @@ const Form_sp101 = () => {
   const [nameOfSupplier, setNameOfSupplier] = useState()
   const [numberOfQuotation, setNumberOfQuotation] = useState()
   const [quotationNumber, setQuotationNumber] = useState()
+  const [date, setDate] = useState("");
   const [modeOfPayment, setModeOfPayment] = useState()
   const [deliveryPeriod, setDeliveryPeriod] = useState();
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const signatureFile = JSON.parse(localStorage.getItem("userInfo")).signatureFile;
 
   const navigate = useNavigate();
 
   const { formData, setFormData } = useContext(ContextFormSP101Data);
+
+  const handleDateChange = (e) => {
+    const inputValue = e.target.value;
+
+    // Split the date string by '-' delimiter
+    const parts = inputValue.split('-');
+
+    //Rearranging the parts to format the date as day/month/year
+    const formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+
+    //Setting the formatted date in the state
+    setDate(formattedDate);
+  };
 
   //function for handling downloading pdf form
   const handleDownloadPDF = (e) => {
@@ -43,25 +59,31 @@ const Form_sp101 = () => {
 
     //error handling 
     if (budgetHead === null || sanctionedBudget === null) {
-      toast.error("All fields are required."); return;
+      toast.error("All fields are required.");
+      return;
+    }
+    if (signatureFile === undefined) {
+      toast.error("Please upload your signature in profile section.");
+      return;
     }
     setFormData({
       budgetHead, sanctionedBudget, approxCost, items, category,
       budgetaryApprovalEnclosed,
       readyForInstallation,
       goodForResearchPurpose,
-      GEM,gemarDetails,ptsId,
+      GEM, gemarDetails, ptsId,
       modeOfEnquiry,
       nameOfSupplier,
       numberOfQuotation,
       quotationNumber,
+      date,
       modeOfPayment,
       deliveryPeriod
     });
   }
 
   useEffect(() => {
-    if (formData) {
+    if (signatureFile && formData) {
       SP_101({ formData });
     }
   }, [formData]);
@@ -69,14 +91,13 @@ const Form_sp101 = () => {
   //function for handling submit click
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setButtonDisabled(true);
 
     if (budgetHead === null || sanctionedBudget === null) {
       toast.error("All fields are required.");
-      setButtonDisabled(false);
       return;
     }
     else {
+      setLoading(true);
       try {
         const userName = JSON.parse(localStorage.getItem("userInfo")).name;
         const userId = JSON.parse(localStorage.getItem("userInfo")).id;
@@ -96,6 +117,7 @@ const Form_sp101 = () => {
           nameOfSupplier,
           numberOfQuotation,
           quotationNumber,
+          date,
           modeOfPayment,
           deliveryPeriod
         }
@@ -127,7 +149,7 @@ const Form_sp101 = () => {
       } catch (error) {
         toast.error("An unexpected error occurred.");
       } finally {
-        setButtonDisabled(false); // Reset button state here
+        setLoading(false); // Reset button state here
       }
     }
 
@@ -141,11 +163,17 @@ const Form_sp101 = () => {
       quantity: quantity,
       price: price,
     };
+
     if (!itemDescription || !quantity || !price) {
       toast.error("All fields are required.");
       return;
     }
-    setItems([...items, newItem]); // Append new item to items array
+    // Update items array using the functional form of setItems
+    setItems(prevItems => {
+      const updatedItems = [...prevItems, newItem]; // Append new item to previous items array
+      console.log("Updated Items: ", updatedItems);
+      return updatedItems;
+    });
     // Reset input values
     setItemDescription("");
     setQuantity("");
@@ -192,8 +220,8 @@ const Form_sp101 = () => {
       <div className="container-formsp101 mt-24">
         <div className="wizard" id="myWizard">
           <section>
-            <h4 className="page-title text-center">
-              Indent For Purchases Below Rs.25000
+            <h4 className="page-title text-center font-semibold font-figtree">
+              INDENT FOR PURCHASES BELOW Rs.25000
             </h4>
           </section>
           <div className="wizard__progress">
@@ -280,7 +308,7 @@ const Form_sp101 = () => {
                         <input
                           className="form-control input-sm add-button-input"
                           type="text"
-                          placeholder="itemDescription"
+                          placeholder="Item Description"
                           value={itemDescription}
                           onChange={(e) => setItemDescription(e.target.value)}
                         />
@@ -316,19 +344,19 @@ const Form_sp101 = () => {
                         onChange={(e) => setPrice(parseFloat(e.target.value))}
                       />
                     </div>
-                    <button
-                      className="btn add-button ml-11 mt-10"
+                    <Button
+                      className="ml-11 mt-11 font-figtree text-lg bg-blue-700"
                       onClick={editingIndex !== null ? updateItem : addItem}
                     >
                       {editingIndex !== null ? "Update Item" : "Add Item"}
-                    </button>
+                    </Button>
 
                     <ul className="">
                       {items.map((item, index) => (
                         <li key={index}>
                           <div className="bg-red ml-4 mt-4 ">
                             <div className="col-sm-4 shadow mt-2">
-                              itemDescription: {item.itemDescription}
+                              Item Description: {item.itemDescription}
                             </div>
                             <div className="col-sm-2 mt-2 ml-2 shadow">
                               Quantity: {item.quantity}
@@ -338,18 +366,18 @@ const Form_sp101 = () => {
                             </div>
                           </div>
                           {/* Buttons for modifying and deleting items */}
-                          <button
-                            className="btn add-button bg-cyan-500 hover:bg-cyan-600 ml-8"
+                          <Button
+                            className="ml-8 bg-green-500 font-figtree text-lg"
                             onClick={() => editItem(index)}
                           >
                             Edit
-                          </button>
-                          <button
-                            className="btn add-button bg-sky-500 "
+                          </Button>
+                          <Button
+                            className="ml-2 bg-red-500 font-figtree text-lg"
                             onClick={() => deleteItem(index)}
                           >
                             Delete
-                          </button>
+                          </Button>
                         </li>
                       ))}
                     </ul>
@@ -474,39 +502,39 @@ const Form_sp101 = () => {
                   </div> */}
 
                   {
-                    (GEM=="No")?
-                    <>
-                    <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="control-label" htmlFor="name--last">
-                        GeMAR Details<span className="required">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control input-sm"
-                        id="name__last"
-                        value={gemarDetails}
-                        onChange={(e) => setGemarDetails(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="control-label" htmlFor="name--last">
-                        PTS ID<span className="required">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control input-sm"
-                        id="name__last"
-                        value={ptsId}
-                        onChange={(e) => setPtsId(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                    </> 
-                    :
-                    <></>
+                    (GEM == "No") ?
+                      <>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="control-label" htmlFor="name--last">
+                              GeMAR Details<span className="required">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control input-sm"
+                              id="name__last"
+                              value={gemarDetails}
+                              onChange={(e) => setGemarDetails(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="form-group">
+                            <label className="control-label" htmlFor="name--last">
+                              PTS ID<span className="required">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control input-sm"
+                              id="name__last"
+                              value={ptsId}
+                              onChange={(e) => setPtsId(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </>
+                      :
+                      <></>
                   }
 
                   <div className="">
@@ -569,6 +597,7 @@ const Form_sp101 = () => {
                         type="date"
                         className="form-control input-sm"
                         id="phone"
+                        onChange={handleDateChange}
                       />
                     </div>
                   </div>
@@ -669,22 +698,21 @@ const Form_sp101 = () => {
                 </div>
               </section>
               <section className="text-right">
-                <button
+                <Button
                   type="button"
-                  className="bg-blue-500 text-white btn-sm hover:bg-blue-700 next"
+                  className="bg-blue-500 text-lg btn-sm next"
                   onClick={handleDownloadPDF}
                 >
                   Download PDF
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="bg-green-500 text-white btn-sm hover:bg-green-700 ml-4 next"
+                  className="bg-green-500 text-lg btn-sm hover:bg-green-700 ml-4 next"
+                  loading={loading}
                   onClick={handleSubmit}
-                  disabled={isButtonDisabled}
-                  style={{ opacity: isButtonDisabled ? 0.5 : 1 }}
                 >
                   Submit
-                </button>
+                </Button>
               </section>
             </div>
           </div>

@@ -58,6 +58,7 @@ model UserOTP {
 model Form {
   id                        Int      @id @default(autoincrement())
   name                      String   @default("")
+  signature                 String   @default("")
   formCategory              String   @default("SP101")
   status                    Boolean  @default(false)
   budgetHead                String
@@ -73,6 +74,7 @@ model Form {
   nameOfSupplier            String
   numberOfQuotation         String
   quotationNumber           String
+  date                      String   @default("")
   modeOfPayment             String
   deliveryPeriod            String
   created_at                DateTime @default(now())

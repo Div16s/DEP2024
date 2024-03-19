@@ -52,6 +52,7 @@ const LoginOtpPage = () => {
                     email: response.data.email,
                     role: response.data.role,
                     department: response.data.department,
+                    signatureFile: response.data.signatureFile,
                     userToken: response.data.userToken,
                 }
                 localStorage.setItem("userInfo", JSON.stringify(userInfo));

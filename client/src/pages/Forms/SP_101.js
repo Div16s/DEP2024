@@ -207,6 +207,7 @@ function SP_101({ formData }) {
 
     doc.setFont('times', 'bold')
     doc.text("dated", 79, 121.5)
+    doc.text(`${formData && formData.date}`, 89, 121.5)
     // doc.text(`${}`, 79, 121.5)
 
     doc.line(89, 122.5, 117, 122.5)
@@ -239,7 +240,7 @@ function SP_101({ formData }) {
         flag = 1
         doc.text(index + 1 + '', 23, ypos, { align: 'left' })
         //console.log(element.Description)
-        doc.text(element.description + '', 35, ypos, { align: 'left', maxWidth: 80 })
+        doc.text(element.itemDescription + '', 35, ypos, { align: 'left', maxWidth: 80 })
         doc.text(element.quantity + '', 122, ypos, { align: 'center' })
         doc.text(element.price + '', 141, ypos, { align: 'center' })
         var amtTotal = (element.quantity) * element.price;
