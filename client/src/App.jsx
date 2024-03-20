@@ -15,6 +15,7 @@ import Form_PurchaseSection from "./pages/Forms/Form_PurchaseSection"
 import SP_101 from "./pages/Forms/SP_101"
 import ApprovedForms from "./pages/ApprovedForms.jsx/ApprovedForms"
 import PendingForms from "./pages/Pending Forms/PendingForms"
+import RejectedForms from "./pages/Rejected Forms/RejectedForms"
 import StickyNavbar from "./components/Header/header"
 import { FooterWithSocialLinks } from "./components/Footer/Footer"
 import ContextFormSP101DataProvider from "./Context/ContextFormSP101DataProvider"
@@ -44,6 +45,7 @@ function App() {
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path="/approvedForms" element={<ApprovedForms />} />
               <Route path="/pendingForms" element={<PendingForms />} />
+              <Route path="/rejectedForms" element={<RejectedForms />} />
               <Route path='*' element={<Error />} />
             </Routes>
             <FooterWithSocialLinks />
