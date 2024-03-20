@@ -182,7 +182,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleRoleSelection("JAO")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -197,7 +197,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleRoleSelection("AO")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -212,7 +212,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleRoleSelection("JR")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -227,7 +227,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleRoleSelection("JS")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -242,7 +242,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleRoleSelection("ACCOUNTS")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -257,7 +257,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        onClick={() => handleRoleSelection("HOD")}
+                        onClick={() => handleRoleSelection("DEAN")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
@@ -288,7 +288,7 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        onClick={() => handleRoleSelection("STUDENT")}
+                        onClick={() => handleRoleSelection("JAO")}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
