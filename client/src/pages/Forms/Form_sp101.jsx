@@ -58,10 +58,10 @@ const Form_sp101 = () => {
     e.preventDefault();
 
     //error handling 
-    if (budgetHead === null || sanctionedBudget === null) {
-      toast.error("All fields are required.");
-      return;
-    }
+    // if (budgetHead === null || sanctionedBudget === null) {
+    //   toast.error("All fields are required.");
+    //   return;
+    // }
     if (signatureFile === undefined) {
       toast.error("Please upload your signature in profile section.");
       return;

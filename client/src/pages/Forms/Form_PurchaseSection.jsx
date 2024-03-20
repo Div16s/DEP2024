@@ -9,12 +9,12 @@ import "./Form_Purchase.css";
 
 const Form_PurchaseSection = () => {
   // Define state for items and input values
-  const [budgetHead, setBudgetHead] = useState(null);
+  const [startPageNo, setStartPageNo] = useState(null);
 
-  const [sanctionedBudget, setSanctionedBudget] = useState(null);
-  const [budgetAvailable, SetBudgetAvailable] = useState(null);
-  const [budgetBooked, setBudgetBooked] = useState(null);
-  const [balanceBudget, setBalanceBudget] = useState(null);
+  const [endPageNo, setEndPageNo] = useState(null);
+  const [rsInValue, setRsInValue] = useState(null);
+  const [rsInWords, setRsInWords] = useState(null);
+  
 
   const navigate = useNavigate();
 
@@ -25,16 +25,9 @@ const Form_PurchaseSection = () => {
     e.preventDefault();
 
     //error handling
-    if (budgetHead === null || sanctionedBudget === null) {
-      toast.error("All fields are required.");
-      return;
-    }
+   
     setFormData({
-      budgetHead,
-      sanctionedBudget,
-      budgetAvailable,
-      budgetBooked,
-      balanceBudget,
+      startPageNo,endPageNo,rsInValue,rsInWords
     });
   };
 
@@ -47,9 +40,36 @@ const Form_PurchaseSection = () => {
   //   //function for handling submit click
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const isValid = validateForm();
+
+    if(isValid){
+
+    }
     console.log("Handle Submit is clicked");
   };
 
+    const validateForm = () => {
+      let isValid =true;
+      if (startPageNo === "" ) {
+        toast.error("Enter starting Page Number");
+        isValid = false;
+      } else if (endPageNo === "" ) {
+        toast.error("Enter Ending Page Number");
+        isValid = false;
+      } else if (rsInValue === "" ) {
+        toast.error("Enter Rs in value");
+        isValid = false;
+      } else if (rsInWords === "" ) {
+        toast.error("Enter Rs in Words");
+        isValid = false;
+      } else if (startPageNo === "" ) {
+        toast.error("Enter starting Page Number");
+        isValid = false;
+      }
+
+      return isValid;
+    };
   return (
     <div>
       <div className="container-formsp101 mt-20 h-screen">
@@ -118,19 +138,19 @@ const Form_PurchaseSection = () => {
                     {" "}
                     Purchase proposal <label> from Page Number </label>
                     <input
-                      type="text"
+                      type="number"
                       className="form input-sm"
                       id="name__last"
-                      value={sanctionedBudget}
-                      onChange={(e) => setSanctionedBudget(e.target.value)}
+                      value={startPageNo}
+                      onChange={(e) => setStartPageNo(e.target.value)}
                     />
                     <label>to Page Number</label>
                     <input
-                      type="text"
+                      type="number"
                       className="form input-sm mr-3 "
                       id="name__last"
-                      value={sanctionedBudget}
-                      onChange={(e) => setSanctionedBudget(e.target.value)}
+                      value={endPageNo}
+                      onChange={(e) => setEndPageNo(e.target.value)}
                     />
                     is in order.
                   </div>
@@ -140,19 +160,19 @@ const Form_PurchaseSection = () => {
                     The Competent Financial Authority (CFA) may kindly
 accord financial sanction to the extent of  <label> Rs. </label>
                     <input
-                      type="text"
+                      type="number"
                       className="form input-sm"
                       id="name__last"
-                      value={sanctionedBudget}
-                      onChange={(e) => setSanctionedBudget(e.target.value)}
+                      value={rsInValue}
+                      onChange={(e) => setRsInValue(e.target.value)}
                     />
                     <label>in words</label>
                     <input
                       type="text"
                       className="form input-sm mr-3 "
                       id="name__last"
-                      value={sanctionedBudget}
-                      onChange={(e) => setSanctionedBudget(e.target.value)}
+                      value={rsInWords}
+                      onChange={(e) => setRsInWords(e.target.value)}
                     />
                     only for the above purchase
                   </div>
