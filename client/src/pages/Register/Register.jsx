@@ -17,7 +17,7 @@ const Register = () => {
   let [selectedRole, setSelectedRole] = useState("");
   let [selectedDept, setSelectedDept] = useState("");
 
-  const[loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRoleSelection = (role) => {
@@ -28,48 +28,72 @@ const Register = () => {
     setSelectedDept(dept);
   };
 
-  //validation checks
-  async function handleRegister(e) {
+  // Validation checks and form submission
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    if(loading) return;
+    if (loading) return;
     setLoading(true);
+
+    const isValid = validateForm();
+
+    if (isValid) {
+      try {
+        const userDetails = {
+          name: name,
+          email: email,
+          role: selectedRole,
+          department: selectedDept,
+        };
+
+        const response = await sendOTP_register(userDetails);
+
+        if (response.status === 200) {
+          toast.success(response.data.message);
+          setTimeout(() => {
+            navigate("/register/user/otp", { state: userDetails });
+          }, 2000);
+          setName("");
+          setEmail("");
+          setSelectedRole("");
+          setSelectedDept("");
+        } else {
+          toast.error(response.response.data.err);
+        }
+      } catch (error) {
+        toast.error("An error occurred while sending OTP. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const validateForm = () => {
+    let isValid = true;
 
     if (name === "") {
       toast.error("Enter your name");
+      isValid = false;
     } else if (email === "") {
       toast.error("Enter your email");
+      isValid = false;
     } else if (!email.includes("@")) {
-      toast.error("Enter valid email");
+      toast.error("Enter a valid email");
+      isValid = false;
     } else if (selectedRole === "") {
       toast.error("Select your role");
-    } else if (selectedDept === "") {
-      toast.error("Select your Department");
-    } else {
-      const userDetails = {
-        name: name,
-        email: email,
-        role: selectedRole,
-        department: selectedDept,
-      };
-
-      const response = await sendOTP_register(userDetails);
-
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        setTimeout(function () {
-          navigate("/register/user/otp", { state: userDetails });
-        }, 2000);
-        setName("");
-        setEmail("");
-        setSelectedRole("");
-        setSelectedDept("");
-      } else {
-        toast.error(response.response.data.err);
-      }
+      isValid = false;
+    } else if (
+      (selectedRole.includes("FACULTY") ||
+      selectedRole.includes("HOD")) &&
+      selectedDept === ""
+    ) {
+      toast.error("Select your department");
+      isValid = false;
     }
-    setLoading(false);
-  }
+
+    return isValid;
+  };
 
   return (
     <div className="bg-gray-100 flex items-center justify-center mt-4 h-screen">

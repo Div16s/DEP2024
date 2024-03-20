@@ -69,19 +69,7 @@ function StickyNavbar() {
               SP101 FORM
             </Link>
           </Typography>
-          <Typography
-            as="li"
-            variant="small"
-            color="blue-gray"
-            className="p-1"
-          >
-            <Link
-              to={"/forms/SP102"}
-              className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm"
-            >
-              SP102 FORM
-            </Link>
-          </Typography>
+        
           <Typography
             as="li"
             variant="small"
@@ -100,6 +88,20 @@ function StickyNavbar() {
           >
             <Link to={"/pendingForms"} className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm">
               PENDING FORMS
+            </Link>
+          </Typography>
+
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1"
+          >
+            <Link
+              to={"/rejectedForms"}
+              className="flex items-center p-2 text-base font-custom font-semibold bg-white rounded-md hover:text-black hover:bg-gray-200 shadow-sm"
+            >
+              REJECTED FORMS
             </Link>
           </Typography>
         </>

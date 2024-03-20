@@ -45,12 +45,40 @@ const Form_BudgetSection = () => {
 //   //function for handling submit click
   const handleSubmit = (e) => {
     e.preventDefault();
+    const isValid = validateForm();
+    if(isValid){
+      // use try catch here
+    }
+
+
     console.log("Handle Submit is clicked");
   }
 
 
 
 
+
+  const validateForm = () => {
+    let isValid = true;
+  
+    if (budgetHead === "" ||budgetHead === null ) {
+      toast.error("Enter Budget Head");
+      isValid = false;
+    } else if (sanctionedBudget === "" ||sanctionedBudget === null ) {
+      toast.error("Enter Sanctioned Budget");
+      isValid = false;
+    } else if (budgetAvailable === "") {
+      toast.error("Enter Available Budget");
+      isValid = false;
+    } else if (budgetBooked === "" ||budgetBooked === null ) {
+      toast.error("Enter Budget Booked");
+      isValid = false;
+    } else if (balanceBudget === "" ||balanceBudget === null ) {
+      toast.error("Enter Budget Balance");
+      isValid = false;
+    } 
+    return isValid;
+  };
 
 
 
@@ -127,7 +155,7 @@ const Form_BudgetSection = () => {
                         Budget Sanctioned <span className="required">*</span>
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control input-sm"
                         id="name__last"
                         value={sanctionedBudget}
@@ -142,7 +170,7 @@ const Form_BudgetSection = () => {
                         Budget Available <span className="required">*</span>
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control input-sm"
                         id="name__last"
                         value={budgetAvailable}
@@ -158,7 +186,7 @@ const Form_BudgetSection = () => {
                         Budget Booked <span className="required">*</span>
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control input-sm"
                         id="name__last"
                         value={budgetBooked}
@@ -174,7 +202,7 @@ const Form_BudgetSection = () => {
                         Balance Budget <span className="required">*</span>
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control input-sm"
                         id="name__last"
                         value={balanceBudget}

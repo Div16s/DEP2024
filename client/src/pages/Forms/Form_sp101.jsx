@@ -58,10 +58,10 @@ const Form_sp101 = () => {
     e.preventDefault();
 
     //error handling 
-    if (budgetHead === null || sanctionedBudget === null) {
-      toast.error("All fields are required.");
-      return;
-    }
+    // if (budgetHead === null || sanctionedBudget === null) {
+    //   toast.error("All fields are required.");
+    //   return;
+    // }
     if (signatureFile === undefined) {
       toast.error("Please upload your signature in profile section.");
       return;
@@ -92,11 +92,10 @@ const Form_sp101 = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (budgetHead === null || sanctionedBudget === null) {
-      toast.error("All fields are required.");
-      return;
-    }
-    else {
+
+
+    const isValid = validateForm();
+    if (isValid) {
       setLoading(true);
       try {
         const userName = JSON.parse(localStorage.getItem("userInfo")).name;
@@ -198,6 +197,85 @@ const Form_sp101 = () => {
     setPrice(0);
     setEditingIndex(null);
   };
+
+// validate the form
+// 
+
+const validateForm = () => {
+  let isValid = true;
+
+  if (budgetHead === "" ||budgetHead === null ) {
+    toast.error("Enter Budget Head");
+    isValid = false;
+  } else if (sanctionedBudget === "" ||sanctionedBudget === null ) {
+    toast.error("Enter Sanctioned Budget");
+    isValid = false;
+  } else if (items.length === 0) {
+    toast.error("Enter at least one Item");
+    isValid = false;
+  } else if (category === "") {
+    toast.error("Select category");
+    isValid = false;
+  } else if (budgetaryApprovalEnclosed === "") {
+    toast.error("Select Budgetary Approval Enclosed");
+    isValid = false;
+  } else if (readyForInstallation === "") {
+    toast.error("Select ready for installation");
+    isValid = false;
+  } else if (goodForResearchPurpose === "") {
+    toast.error("Select Research Purpose or Other Purpose");
+    isValid = false;
+  } else if (modeOfEnquiry === "") {
+    toast.error("Select Mode of Enquiry");
+    isValid = false;
+  } else if (modeOfEnquiry === "") {
+    toast.error("Select Mode of Enquiry");
+    isValid = false;
+  } else if (GEM === "") {
+    toast.error("Select GeM Purchase");
+    isValid = false;
+  } else if (GEM === "No") {
+    if (gemarDetails === "") {
+      toast.error("Enter GeMAR Details");
+      isValid = false;
+    } 
+    if (ptsId === "") {
+      toast.error("Enter PTS ID");
+      isValid = false;
+    } 
+  } else if (
+    (selectedRole.includes("FACULTY") ||
+    selectedRole.includes("HOD")) &&
+    selectedDept === ""
+  ) {
+    toast.error("Select your department");
+    isValid = false;
+  }else if (goodForResearchPurpose === "") {
+    toast.error("Select Research Purpose or Other Purpose");
+    isValid = false;
+  } else if (nameOfSupplier === "") {
+    toast.error("Select Name of Supplier");
+    isValid = false;
+  } else if (numberOfQuotation === "") {
+    toast.error("Select Number of Quotation");
+    isValid = false;
+  } else if (quotationNumber === "") {
+    toast.error("Select Quotation Number");
+    isValid = false;
+  } else if (date === "") {
+    toast.error("Select Date");
+    isValid = false;
+  } else if (modeOfPayment === "") {
+    toast.error("Select Mode of Payment");
+    isValid = false;
+  } else if (deliveryPeriod === "") {
+    toast.error("Select Delivery Period");
+    isValid = false;
+  }
+
+  return isValid;
+};
+
   return (
     <div>
       <div className="container-formsp101 mt-24">
@@ -269,7 +347,7 @@ const Form_sp101 = () => {
                         Sanctioned Budget<span className="required">*</span>
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control input-sm"
                         id="name__last"
                         value={sanctionedBudget}
@@ -372,7 +450,7 @@ const Form_sp101 = () => {
                         Approx Cost:<span className="required">*</span>
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control input-sm"
                         id="name__first--kana"
                         value={approxCost}
@@ -507,7 +585,7 @@ const Form_sp101 = () => {
                               PTS ID<span className="required">*</span>
                             </label>
                             <input
-                              type="text"
+                              type="number"
                               className="form-control input-sm"
                               id="name__last"
                               value={ptsId}
@@ -545,7 +623,7 @@ const Form_sp101 = () => {
                     </div>
                     <input
                       onChange={(e) => setNumberOfQuotation(e.target.value)}
-                      className="input-sm form-control " type="text" />
+                      className="input-sm form-control " type="number" />
                   </div>
                   <div className="mx-4 my-2 mt-2 flex">
                     <div className="quotation ">Name of the supplier :</div>
@@ -561,7 +639,7 @@ const Form_sp101 = () => {
                         Quotation Number
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control input-sm"
                         id="email"
                         onChange={(e) => setQuotationNumber(e.target.value)}

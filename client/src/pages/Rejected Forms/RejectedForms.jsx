@@ -1,5 +1,5 @@
 import { Card, Typography } from "@material-tailwind/react";
-import { MdOutlinePendingActions } from "react-icons/md";
+import { MdOutlineCancelPresentation } from "react-icons/md";
 import { pendingForms, pendingFormsAdmin, approveFormRequest } from "../../services/Apis";
 import { ToastContainer, toast } from "react-toastify";
 import { useState, useEffect } from "react";
@@ -53,7 +53,7 @@ const fetchPendingFormsForAdmin = async (username) => {
     }
 }
 
-export default function PendingForms() {
+export default function RejectedForms() {
     const [userPendingForms, setUserPendingForms] = useState([]);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: approveFormModalOpen, onOpen: openApproveFormModal, onClose: closeApproveFormModal } = useDisclosure();
@@ -146,8 +146,8 @@ export default function PendingForms() {
     return (
         <div className="h-screen">
             <h1 className="mt-32 -mb-10 ml-48 text-2xl text-blue-gray-900 font-semibold">
-                <MdOutlinePendingActions size={40} />
-                PENDING FORMS
+                <MdOutlineCancelPresentation size={40} />
+                REJECTED FORMS
             </h1>
             <div className="flex justify-center">
                 <Card className="mt-14 h-full w-4/5 overflow-scroll">
@@ -155,7 +155,7 @@ export default function PendingForms() {
                         <thead>
                             <tr>
                                 {TABLE_HEAD.map((head) => (
-                                    <th key={head} className="border-b border-blue-gray-00 text-white bg-orange-400 p-4">
+                                    <th key={head} className="border-b border-blue-gray-00 text-white bg-red-700 p-4">
                                         <Typography
                                             variant="small"
                                             color="white"
@@ -165,7 +165,7 @@ export default function PendingForms() {
                                         </Typography>
                                     </th>
                                 ))}
-                                <th className="border-b border-blue-gray-00 text-lg text-white bg-orange-400 p-4">Actions</th>
+                                <th className="border-b border-blue-gray-00 text-lg text-white bg-red-700 p-4">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -240,7 +240,7 @@ export default function PendingForms() {
                                 <tr className="h-96">
                                     <td className="p-4 text-center flex items-center justify-center">
                                         <Typography color="blue-gray" className="text-center text-xl font-semibold font-figtree">
-                                            No Pending Forms
+                                            No Rejected Forms
                                         </Typography>
                                     </td>
                                 </tr>
