@@ -30,5 +30,17 @@ export const pendingForms = async (data) => {
 }
 
 export const pendingFormsAdmin = async (data) => {
-    return await commonRequest("POST",`${BACKEND_URL}/forms/pendingForms_Admin`,data);
+    return await commonRequest("POST",`${BACKEND_URL}/forms/pending/Admin`,data);
+}
+
+export const approvedForms = async (data) => {
+    return await commonRequest("POST",`${BACKEND_URL}/forms/approved`,data);
+}
+
+export const approvedFormsAdmin = async (data) => {
+    return await commonRequest("POST",`${BACKEND_URL}/forms/approved/Admin`,data);
+}
+
+export const approveFormRequest = async (data) => {
+    return await commonRequest("POST",`${BACKEND_URL}/forms/approve`,data);
 }

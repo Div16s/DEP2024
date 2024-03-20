@@ -1,7 +1,7 @@
 import { Card, Typography } from "@material-tailwind/react";
 import { MdOutlinePendingActions } from "react-icons/md";
-import { pendingForms, pendingFormsAdmin } from "../../services/Apis";
-import { toast } from "react-toastify";
+import { pendingForms, pendingFormsAdmin, approveFormRequest } from "../../services/Apis";
+import { ToastContainer, toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react"
 import {
@@ -20,8 +20,6 @@ const TABLE_HEAD = ["Form ID", "User", "Budget Head", "Date", "Category"];
 
 const fetchPendingFormsForUser = async (userId) => {
     // Make an API request to fetch pending forms data for the specified user ID
-    // Replace the URL with your actual backend endpoint
-    console.log("User ID: ", userId);
     const userData = {
         userId
     }
@@ -57,16 +55,69 @@ const fetchPendingFormsForAdmin = async (username) => {
 
 export default function PendingForms() {
     const [userPendingForms, setUserPendingForms] = useState([]);
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: approveFormModalOpen, onOpen: openApproveFormModal, onClose: closeApproveFormModal } = useDisclosure();
+    const { isOpen: rejectFormModalOpen, onOpen: openRejectFormModal, onClose: closeRejectFormModal } = useDisclosure();
+    const [pdfUrl, setPdfUrl] = useState(null);
+    const [formID, setFormID] = useState("");
+    const [loading, setLoading] = useState(false);
     const userId = JSON.parse(localStorage.getItem("userInfo")).id;
     const role = JSON.parse(localStorage.getItem("userInfo")).role;
-    const [pdfUrl, setPdfUrl] = useState(null);
     const department = JSON.parse(localStorage.getItem("userInfo")).department;
 
-    // Callback function to handle PDF generation
+    // Callback function to handle PDF url generation
     const handlePdfGenerated = (url) => {
         setPdfUrl(url);
     }
+
+    // Function to handle viewing a form
+    const handleViewForm = (id) => {
+        setFormID(id);
+        onOpen();
+    };
+
+    // Function to close the PDF viewer modal
+    const handleClosePdfViewer = () => {
+        setFormID("");
+        setPdfUrl(null);
+        onClose();
+    };
+
+    // Function to handle approving a form
+    const approveForm = (id) => {
+        setFormID(id);
+        openApproveFormModal();
+    }
+
+    // Function to handle sending a request to backend to approve a form
+    const handleApproveForm = async () => {
+        if(loading) return;
+        setLoading(true);
+        try {
+            const adminSignature = JSON.parse(localStorage.getItem("userInfo")).signatureFile;
+            const data = {
+                formID,
+                adminSignature
+            }
+            console.log(data);
+            const response = await approveFormRequest(data);
+
+            if (response.status === 200) {
+                toast.success(response.data.message);
+            }
+        } catch (error) {
+            toast.error(response.response.data.err);
+        } finally {
+            setLoading(false);
+            closeApproveFormModal();
+        }
+    }
+
+    // Function to handle rejecting a form
+    const rejectForm = (id) => {
+        openRejectFormModal();
+    }
+
 
     useEffect(() => {
         if (role === "HOD") {
@@ -118,10 +169,10 @@ export default function PendingForms() {
                             </tr>
                         </thead>
                         <tbody>
-                            {userPendingForms && userPendingForms.map(({ id, name, budgetHead, date, formCategory, formId }, index) => (
-                                
+                            {userPendingForms.length>0 ? userPendingForms.map(({ id, name, budgetHead, date, formCategory }, index) => (
+
                                 <tr key={id} className={index % 2 === 0 ? "even:bg-blue-gray-50/50" : ""}>
-                                <SP_101_PDF_URL_Generator pendingForms={userPendingForms} department={department} onPdfGenerated={handlePdfGenerated} />
+                                    <SP_101_PDF_URL_Generator forms={userPendingForms} formId={formID} department={department} onPdfGenerated={handlePdfGenerated} />
                                     <td className="p-4">
                                         <Typography variant="small" color="blue-gray" className="text-base font-normal">
                                             {id}
@@ -149,136 +200,123 @@ export default function PendingForms() {
                                     </td>
                                     {role === 'HOD' && (
                                         <td className="p-4 flex items-center">
-                                            <button
-                                                class="select-none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                            <Button
+                                                colorScheme="blue" size={"md"} fontFamily={"figtree"}
+                                                mr={2}
                                                 type="button"
-                                                onClick={onOpen}>
+                                                onClick={() => handleViewForm(id)}>
                                                 View
-                                            </button>
-                                            <Modal size={"full"} isOpen={isOpen} onClose={onClose}>
-                                                <ModalOverlay />
-                                                <ModalContent>
-                                                    <ModalHeader>PDF Viewer</ModalHeader>
-                                                    <ModalCloseButton />
-                                                    <ModalBody>
-                                                        <iframe src={pdfUrl} width="100%" height="500px"></iframe> {/* Render PDF in an iframe */}
-                                                    </ModalBody>
-                                                    <ModalFooter>
-                                                        <Button colorScheme="blue" onClick={onClose}>Close</Button>
-                                                    </ModalFooter>
-                                                </ModalContent>
-                                            </Modal>
-                                            <button className="bg-green-300 text-base text-white px-2 py-1 rounded-md hover:bg-green-400 mr-2"
-                                                onClick={() => approveForm(formId)}>Approve</button>
-                                            <button className="bg-red-400 text-base text-white px-2 py-1 rounded-md hover:bg-red-600"
-                                                onClick={() => rejectForm(formId)}>Reject</button>
+                                            </Button>
+                                            <ViewPDFModal isOpen={isOpen} onClose={onClose} pdfUrl={pdfUrl} handleClosePdfViewer={handleClosePdfViewer} />
+                                            <Button colorScheme="green" mr={2} size={"md"} fontFamily={"figtree"}
+                                                onClick={() => approveForm(id)}
+                                            >
+                                                Approve
+                                            </Button>
+                                            <ApproveFormModal isOpen={approveFormModalOpen} onClose={closeApproveFormModal} handleApproveForm={handleApproveForm} loading={loading}/>
+                                            <Button colorScheme="red" size={"md"} fontFamily={"figtree"}
+                                                onClick={() => rejectForm(id)}
+                                            >
+                                                Reject
+                                            </Button>
+                                            <RejectFormModal isOpen={rejectFormModalOpen} onClose={closeRejectFormModal}/>
                                         </td>
                                     )}
                                     {role !== 'HOD' && (
                                         <td className="p-4">
-                                            <button className="bg-blue-300 text-base text-white px-2 py-1 rounded-md hover:bg-blue-400"
-                                                onClick={() => viewForm(formId)}>View</button>
+                                            <Button
+                                                colorScheme="blue" size={"md"} fontFamily={"figtree"}
+                                                mr={2}
+                                                type="button"
+                                                onClick={() => handleViewForm(id)}>
+                                                View
+                                            </Button>
+                                            <ViewPDFModal isOpen={isOpen} onClose={onClose} pdfUrl={pdfUrl} handleClosePdfViewer={handleClosePdfViewer} />
                                         </td>
                                     )}
                                 </tr>
-                            ))}
+                            ))
+                            :(<tbody>
+                                <tr className="h-96">
+                                    <td className="p-4 text-center flex items-center justify-center">
+                                        <Typography color="blue-gray" className="text-center text-xl font-semibold font-figtree">
+                                            No Pending Forms
+                                        </Typography>
+                                    </td>
+                                </tr>
+                            </tbody>)}
                         </tbody>
                     </table>
                 </Card>
             </div>
+            <ToastContainer />
         </div>
     );
 }
 
-// const TABLE_HEAD = ["Serial No.", "User", "Date", "Category"];
+//Component for ViewPDF Modal
+const ViewPDFModal = ({ isOpen, onClose, pdfUrl, handleClosePdfViewer }) => {
+    return (
+        <Modal size={"full"} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader></ModalHeader>
+                <ModalCloseButton size={"lg"} />
+                <ModalBody>
+                    <iframe src={pdfUrl} width="100%" height="500px"></iframe>
+                </ModalBody>
+                <ModalFooter>
+                    <Button colorScheme="red" size={"lg"} onClick={handleClosePdfViewer}>Close</Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    )
+}
 
-// const TABLE_ROWS = [
-//     {
-//         id: "1",
-//         name: "Rohit",
-//         date: "23/02/24",
-//         category: "SP101"
-//     },
-//     {
-//         id: "2",
-//         name: "Mukesh",
-//         date: "21/01/24",
-//         category: "SP101"
-//     },
-//     {
-//         id: "3",
-//         name: "Anil",
-//         date: "19/02/24",
-//         category: "SP102"
-//     },
-//     {
-//         id: "4",
-//         name: "Manish",
-//         date: "24/02/24",
-//         category: "SP101"
-//     },
-//     {
-//         id: "5",
-//         name: "Rishabh",
-//         date: "04/01/24",
-//         category: "SP102"
-//     },
-// ];
+//Component for Approve Form Modal
+const ApproveFormModal = ({ isOpen, onClose, handleApproveForm ,loading }) => {
+    return (
+        <Modal size={"md"} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+                {/* <ModalHeader>Approve Form</ModalHeader> */}
+                <ModalCloseButton size={"lg"} />
+                <ModalBody className="bg">
+                    <FormControl>
+                        <FormLabel marginRight={2}>
+                            <h1 className="text-2xl font-figtree font-semibold">Enter Remarks</h1>
+                        </FormLabel>
+                        <Input type="text" borderWidth="1px" borderColor="gray.400"/>
+                    </FormControl>
+                </ModalBody>
+                <ModalFooter>
+                    <Button colorScheme="green" size={"lg"} isLoading={loading} onClick={handleApproveForm}>Approve</Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    )
+}
 
-// export default function PendingForms() {
-//     return (
-//         <div className="h-screen">
-//             <h1 className="mt-32 -mb-10 ml-48 text-2xl text-blue-gray-900 font-semibold">
-//                 <MdOutlinePendingActions size={40}/>
-//                 PENDING FORMS
-//             </h1>
-//             <div className="flex justify-center">
-//                 <Card className="mt-14 h-full w-4/5 overflow-scroll">
-//                     <table className="w-full min-w-max table-auto text-left">
-//                         <thead>
-//                             <tr>
-//                                 {TABLE_HEAD.map((head) => (
-//                                     <th key={head} className="border-b border-blue-gray-00 bg-red-300 p-4">
-//                                         <Typography
-//                                             variant="small"
-//                                             color="white"
-//                                             className="font-normal leading-none opacity-70"
-//                                         >
-//                                             {head}
-//                                         </Typography>
-//                                     </th>
-//                                 ))}
-//                             </tr>
-//                         </thead>
-//                         <tbody>
-//                             {TABLE_ROWS.map(({ id, name, date, category }, index) => (
-//                                 <tr key={name} className="even:bg-blue-gray-50/50">
-//                                     <td className="p-4">
-//                                         <Typography variant="small" color="blue-gray" className="font-normal">
-//                                             {id}
-//                                         </Typography>
-//                                     </td>
-//                                     <td className="p-4">
-//                                         <Typography variant="small" color="blue-gray" className="font-normal">
-//                                             {name}
-//                                         </Typography>
-//                                     </td>
-//                                     <td className="p-4">
-//                                         <Typography variant="small" color="blue-gray" className="font-normal">
-//                                             {date}
-//                                         </Typography>
-//                                     </td>
-//                                     <td className="p-4">
-//                                         <Typography as="a" href="#" variant="small" color="blue-gray" className="font-medium">
-//                                             {category}
-//                                         </Typography>
-//                                     </td>
-//                                 </tr>
-//                             ))}
-//                         </tbody>
-//                     </table>
-//                 </Card>
-//             </div>
-//         </div>
-//     );
-// }
+//Component for Reject Form Modal
+const RejectFormModal = ({ isOpen, onClose, rejectForm }) => {
+    return (
+        <Modal size={"md"} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+                {/* <ModalHeader>Reject Form</ModalHeader> */}
+                <ModalCloseButton size={"lg"} />
+                <ModalBody>
+                    <FormControl>
+                        <FormLabel marginRight={2}>
+                            <h1 className="text-2xl font-figtree font-semibold">Enter Remarks</h1>
+                        </FormLabel>
+                        <Input type="text" borderWidth="1px" borderColor="gray.400"/>
+                    </FormControl>
+                </ModalBody>
+                <ModalFooter>
+                    <Button colorScheme="red" size={"lg"} onClick={onClose}>Reject</Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    )
+}

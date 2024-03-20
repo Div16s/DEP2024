@@ -2,13 +2,14 @@ import { jsPDF } from 'jspdf';
 import { useEffect } from 'react';
 
 
-function SP_101_PDF_URL_Generator({ pendingForms, department, onPdfGenerated }) {
+function SP_101_PDF_URL_Generator({ forms, formId, department, onPdfGenerated }) {
     // Function to generate PDF
     const generatePdf = (formData) => {
         const doc = new jsPDF({ orientation: "p", lineHeight: 1 });
 
         const userName = formData.name;
         const dept = department;
+        const adminSignature = formData.adminSignature || "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==";
         let imageUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKgAAAErCAMAAAB9xjhEAAAAbFBMVEUAAAD///+zs7P19fWwsLD7+/vBwcFiYmKYmJjGxsYwMDDKysosLCyRkZGlpaXu7u5QUFDh4eHo6Oh/f39YWFjQ0NBoaGiHh4dHR0dBQUE3NzcRERG9vb0aGhooKChubm54eHgeHh7Y2Nh8fHx+3mLDAAABuklEQVR4nO3YzVbiQBAGUMqEf4EBdXREwcH3f8cJOmowgbAxHc65d5tafHRXpyv0egAAAAAAAAAAAAAAAAAAAAAAAAAAAHCphr3RGVW3dzH+8SgnTfrTuG+smkfEoIU0x/3OigiRLebXp6ryfVHzz/lJy/gwfThaNNs/n7eYqiqPkqsjRZPiWT5pNVfFoBw0Fr9qi8ax+tNyrqpR9LNS1FlNyWMsW49V42GyXpaSPlUrRvHcfqyK58mmd1Xe/tXme8mibpnblhf7vjro08iGhyXbfppoB+ZR53AFs2Mvgzbdx643Wryf+OlX0sH6qySPx3T5vrzsX0gvd8vV+Lrcqtnnos4S35y1yo2wmu1X9e8gutChFTf9cqsup7uI/m3qULWun76dq1Xim/OEm3ww3i0+VzV1nCaTj2nlnKE6reGFLOn/ITQi/dzU6H2q2qaO0Sy/kCZ9G+yL0T51jDO83aldGEkaZZcS9DZSf82f6zW6OZRUvR79NO2abbH7Xfi2a7aJOPlvT3dEvKaOcJ7iPHV3KC3LLmXvi6E/dYTzrAcXEhQAAAAAAAAAAAAAAAAAAAAAAAAAAADq/QNnagmFj+VhLAAAAABJRU5ErkJggg==";
         if (formData.signature && typeof formData.signature === "string" && formData.signature.startsWith("data:image/png")) {
             imageUrl = formData.signature;
@@ -286,12 +287,12 @@ function SP_101_PDF_URL_Generator({ pendingForms, department, onPdfGenerated }) 
         doc.setFont("times", 'bold')
         doc.text("Delivery Period:", 21, ypos, { align: 'left' })
         doc.text(`${formData && formData.deliveryPeriod}`, 60, ypos, { align: 'left' })
-        doc.addImage(imageUrl, 'PNG', 165, ypos, 10, 10);
-        ypos += 15
+        doc.addImage(imageUrl, 'PNG', 140, ypos, 50, 20);
+        ypos += 25
         doc.text("Signature of the Indenter", 180, ypos, { align: 'right' })
         doc.setFont("times", 'bold')
-        doc.addImage(imageUrl, 'PNG', 40, ypos, 10, 10);
-        ypos += 15;
+        doc.addImage(adminSignature, 'PNG', 20, ypos, 50, 20);
+        ypos += 25;
         doc.text("HOD/PI (for external projects only)", 21, ypos, { align: 'left' })
         ypos += 5
         doc.setFont("times", 'bold')
@@ -435,12 +436,15 @@ function SP_101_PDF_URL_Generator({ pendingForms, department, onPdfGenerated }) 
 
     // Call the generatePdf function when the component mounts
     useEffect(() => {
-        if (pendingForms && Array.isArray(pendingForms)) {
-            pendingForms.forEach((formData) => {
+        if (forms && Array.isArray(forms) && formId) {
+            // Find the form data with the matching formId
+            const formData = forms.find(form => form.id === formId);
+            // If the form data is found, call generatePdf
+            if (formData) {
                 generatePdf(formData);
-            });
+            }
         }
-    }, [pendingForms]);
+    }, [forms, formId]);
 }
 
 export default SP_101_PDF_URL_Generator;

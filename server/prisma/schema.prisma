@@ -59,6 +59,7 @@ model Form {
   id                        Int      @id @default(autoincrement())
   name                      String   @default("")
   signature                 String   @default("")
+  adminSignature            String   @default("")
   formCategory              String   @default("SP101")
   status                    Boolean  @default(false)
   budgetHead                String

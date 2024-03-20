@@ -64,18 +64,19 @@ const submitFormSP101 = async (req, res) => {
 const pendingForms = async (req, res) => {
     const { userId } = req.body;
     const id = parseInt(userId);
-    console.log(id);
 
     try {
         const forms = await prisma.form.findMany({
             where: {
                 userId: id,
                 status: false
+            },
+            include: {
+                items: true // Include the items related to each form
             }
         });
 
         res.status(200).json(forms);
-        res.status(200);
     } catch (error) {
         res.status(500).json({
             err: error
@@ -105,4 +106,72 @@ const pendingFormsAdmin = async (req, res) => {
     }
 }
 
-export { submitFormSP101, pendingForms, pendingFormsAdmin }
+const approvedForms = async (req, res) => {
+    const { userId } = req.body;
+    const id = parseInt(userId);
+    try {
+        const forms = await prisma.form.findMany({
+            where: {
+                userId: id,
+                status: true
+            },
+            include: {
+                items: true // Include the items related to each form
+            }
+        });
+        res.status(200).json(forms);
+    } catch (error) {
+        res.status(500).json({
+            err: error
+        });
+        console.log("Error in approvedForms: ", error.message);
+    }
+}
+
+const approvedFormsAdmin = async (req, res) => {
+    const { username } = req.body;
+    try {
+        const forms = await prisma.form.findMany({
+            where: {
+                budgetHead: username,
+                status: true
+            },
+            include: {
+                items: true // Include the items related to each form
+            }
+        });
+        res.status(200).json(forms);
+    } catch (error) {
+        res.status(500).json({
+            err: error
+        });
+        console.log("Error in approvedForms: ", error.message);
+    }
+}
+
+const approveForm = async (req, res) => {
+    const { formID, adminSignature } = req.body;
+
+    try {
+        const approvedForm = await prisma.form.update({
+            where: {
+                id: formID
+            },
+            data: {
+                adminSignature: adminSignature,
+                status: true,
+            }
+        });
+
+        res.status(200).json({
+            message: "Form approved successfully"
+        });
+    } catch (error) {
+        res.status(500).json({
+            err: error
+        });
+        console.log("Error in approveForm: ", error.message);
+    }
+}
+
+export { submitFormSP101, pendingForms, pendingFormsAdmin, approvedForms, approvedFormsAdmin, approveForm}

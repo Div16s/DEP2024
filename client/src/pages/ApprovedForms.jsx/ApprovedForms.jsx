@@ -1,169 +1,119 @@
-import { Card, Typography, IconButton, CardFooter, Button, } from "@material-tailwind/react";
+import { Card, Typography, CardFooter, Button as TailwindButton } from "@material-tailwind/react";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { approvedForms, approvedFormsAdmin } from "../../services/Apis";
+import { useDisclosure } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button as ChakraButton } from "@chakra-ui/react";
+import  SP_101_PDF_URL_Generator from "../Forms/SP_101_PDF_URL_Generator";
 
-const TABLE_HEAD = ["Serial No.", "User", "Date", "Category"];
+const TABLE_HEAD = ["Form ID", "User", "Budget Head", "Date", "Category"];
 const ROWS_PER_PAGE = 7;
 
-const TABLE_ROWS = [
-    {
-        sr_no: "1",
-        name: "Rohit",
-        date: "23/02/24",
-        category: "SP101"
-    },
-    {
-        sr_no: "2",
-        name: "Apoorv",
-        date: "21/01/24",
-        category: "SP101"
-    },
-    {
-        sr_no: "3",
-        name: "Anil",
-        date: "19/02/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "4",
-        name: "Nikhil",
-        date: "24/02/24",
-        category: "SP101"
-    },
-    {
-        sr_no: "5",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "6",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "7",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "8",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "9",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "10",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "11",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "12",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "13",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "14",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "15",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "16",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "17",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "18",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "19",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "20",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "21",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "22",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "23",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-    {
-        sr_no: "24",
-        name: "Montu",
-        date: "04/01/24",
-        category: "SP102"
-    },
-];
+// Function for fetching Approved forms for the specified user ID
+const fetchApprovedFormsForUser = async (userId) => {
+    try {
+        const userData = {
+            userId
+        };
+        const response = await approvedForms(userData);
+        if (response.status === 200) {
+            console.log(response.data);
+            return response.data;
+        } else {
+            toast.error(response.response.data.err);
+            return response.response.data.err;
+        }
+    } catch (error) {
+        toast.error("An unexpected error occurred.");
+        console.error("Error fetching approved forms for user:", error);
+        return error;
+    }
+};
+
+// Function for fetching Approved forms for the specified username
+const fetchApprovedFormsForAdmin = async (username) => {
+    try {
+        const userData = {
+            username
+        }
+        const response = await approvedFormsAdmin(userData);
+        if (response.status === 200) {
+            console.log(response.data);
+            return await response.data;
+        }
+        else {
+            toast.error(response.response.data.err);
+            return response.response.data.err;
+        }
+    } catch (error) {
+        toast.error("An unexpected error occurred.");
+    }
+}
+
 
 export default function TableWithStripedRows() {
+    const role = JSON.parse(localStorage.getItem("userInfo")).role;
+    const userId = JSON.parse(localStorage.getItem("userInfo")).id;
+    const username = JSON.parse(localStorage.getItem("userInfo")).name;
+    const department = JSON.parse(localStorage.getItem("userInfo")).department;
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentPage, setCurrentPage] = useState(1);
+    const [userApprovedForms, setUserApprovedForms] = useState([]);
+    const [pdfUrl, setPdfUrl] = useState(null);
+    const [formID, setFormID] = useState("");
 
     const indexOfLastRow = currentPage * ROWS_PER_PAGE;
     const indexOfFirstRow = indexOfLastRow - ROWS_PER_PAGE;
-    const currentRows = TABLE_ROWS.slice(indexOfFirstRow, indexOfLastRow);
+    const currentRows = userApprovedForms.length > 0 ? (userApprovedForms.slice(indexOfFirstRow, indexOfLastRow)) : 0;
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const totalPages = Math.ceil(TABLE_ROWS.length / ROWS_PER_PAGE);
+    const totalPages = userApprovedForms && (Math.ceil(userApprovedForms.length / ROWS_PER_PAGE));
+
+    // Callback function to handle PDF url generation
+    const handlePdfGenerated = (url) => {
+        setPdfUrl(url);
+    }
+
+    // Function to handle viewing a form
+    const handleViewForm = (id) => {
+        setFormID(id);
+        onOpen();
+    };
+
+    // Function to close the PDF viewer modal
+    const handleClosePdfViewer = () => {
+        setFormID("");
+        setPdfUrl(null);
+        onClose();
+    };
+
+    useEffect(() => {
+        if (role === "HOD") {
+            // Fetching approved forms for the specified username when the component mounts
+            fetchApprovedFormsForAdmin(username)
+                .then(data => {
+                    setUserApprovedForms(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching approved forms for user:', error);
+                });
+        }
+        else if (role === "FACULTY") {
+            // Fetching approved forms for the specified user ID when the component mounts
+            fetchApprovedFormsForUser(userId)
+                .then(data => {
+                    setUserApprovedForms(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching approved forms for user:', error);
+                });
+        }
+    }, [userId, username]);
+
     return (
         <div className="h-screen">
             <h1 className="mt-32 -mb-10 ml-48 text-2xl text-blue-gray-900 font-semibold">
@@ -176,49 +126,90 @@ export default function TableWithStripedRows() {
                         <thead>
                             <tr>
                                 {TABLE_HEAD.map((head) => (
-                                    <th key={head} className="border-b border-blue-gray-100 bg-green-300 p-4">
+                                    <th key={head} className="border-b border-blue-gray-100 bg-green-400 p-4">
                                         <Typography
                                             variant="small"
                                             color="white"
-                                            className="font-normal leading-none opacity-70"
+                                            className="font-semibold text-lg leading-none"
                                         >
                                             {head}
                                         </Typography>
                                     </th>
                                 ))}
+                                <th className="border-b border-blue-gray-00 text-lg text-white bg-green-400 p-4">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentRows.map(({ sr_no, name, date, category }, index) => (
-                                <tr key={sr_no} className={index % 2 === 0 ? "even:bg-blue-gray-50/50" : ""}>
+                            {currentRows.length > 0 ? (currentRows.map(({ id, name, budgetHead, date, formCategory }, index) => (
+                                <tr key={id} className={index % 2 === 0 ? "even:bg-blue-gray-50/50" : ""}>
+                                <SP_101_PDF_URL_Generator forms={userApprovedForms} formId={formID} department={department} onPdfGenerated={handlePdfGenerated} />
                                     <td className="p-4">
-                                        <Typography variant="small" color="blue-gray" className="font-normal">
-                                            {sr_no}
+                                        <Typography variant="small" color="blue-gray" className="text-base font-normal">
+                                            {id}
                                         </Typography>
                                     </td>
                                     <td className="p-4">
-                                        <Typography variant="small" color="blue-gray" className="font-normal">
+                                        <Typography variant="small" color="blue-gray" className="text-base font-normal">
                                             {name}
                                         </Typography>
                                     </td>
                                     <td className="p-4">
-                                        <Typography variant="small" color="blue-gray" className="font-normal">
+                                        <Typography variant="small" color="blue-gray" className="text-base font-normal">
+                                            {budgetHead}
+                                        </Typography>
+                                    </td>
+                                    <td className="p-4">
+                                        <Typography variant="small" color="blue-gray" className="text-base font-medium">
                                             {date}
                                         </Typography>
                                     </td>
                                     <td className="p-4">
-                                        <Typography variant="small" color="blue-gray" className="font-medium">
-                                            {category}
+                                        <Typography variant="small" color="blue-gray" className="text-base font-medium">
+                                            {formCategory}
+                                        </Typography>
+                                    </td>
+                                    {role === 'HOD' && (
+                                        <td className="p-4 flex items-center">
+                                            <ChakraButton
+                                                colorScheme="blue" size={"md"} fontFamily={"figtree"}
+                                                mr={2}
+                                                type="button"
+                                                onClick={() => handleViewForm(id)}
+                                            >
+                                                View
+                                            </ChakraButton>
+                                            <ViewPDFModal isOpen={isOpen} onClose={onClose} pdfUrl={pdfUrl} handleClosePdfViewer={handleClosePdfViewer} />
+
+                                        </td>
+                                    )}
+                                    {role !== 'HOD' && (
+                                        <td className="p-4">
+                                            <ChakraButton
+                                                colorScheme="blue" size={"md"} fontFamily={"figtree"}
+                                                mr={2}
+                                                type="button"
+                                                onClick={() => handleViewForm(id)}>
+                                                View
+                                            </ChakraButton>
+                                            <ViewPDFModal isOpen={isOpen} onClose={onClose} pdfUrl={pdfUrl} handleClosePdfViewer={handleClosePdfViewer} />
+                                        </td>
+                                    )}
+                                </tr>
+                            ))) : (<tbody>
+                                <tr className="h-96">
+                                    <td className="p-4 text-center flex items-center justify-center">
+                                        <Typography variant="large" color="blue-gray" className="text-center text-lg font-semibold font-figtree">
+                                            No Approved Forms
                                         </Typography>
                                     </td>
                                 </tr>
-                            ))}
+                            </tbody>)}
                         </tbody>
                     </table>
                     {/* Pagination */}
                     {totalPages > 1 && (
                         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                            <Button
+                            <TailwindButton
                                 onClick={() => paginate(currentPage - 1)}
                                 variant="outlined"
                                 size="sm"
@@ -226,11 +217,11 @@ export default function TableWithStripedRows() {
                                 className="flex justify-center items-center flex-col"
                             >
                                 <FaArrowLeft /> Previous
-                                
-                            </Button>
+
+                            </TailwindButton>
                             <div className="flex items-center gap-2">
                                 {Array.from({ length: totalPages }, (_, i) => (
-                                    <Button
+                                    <TailwindButton
                                         key={i}
                                         onClick={() => paginate(i + 1)}
                                         variant="outlined"
@@ -238,10 +229,10 @@ export default function TableWithStripedRows() {
                                         disabled={currentPage === i + 1}
                                     >
                                         {i + 1}
-                                    </Button>
+                                    </TailwindButton>
                                 ))}
                             </div>
-                            <Button
+                            <TailwindButton
                                 onClick={() => paginate(currentPage + 1)}
                                 variant="outlined"
                                 size="sm"
@@ -249,11 +240,30 @@ export default function TableWithStripedRows() {
                                 className="flex justify-center items-center flex-col"
                             >
                                 <FaArrowRight /> Next
-                            </Button>
+                            </TailwindButton>
                         </CardFooter>
                     )}
                 </Card>
             </div>
         </div>
     );
+}
+
+//Component for ViewPDF Modal
+const ViewPDFModal = ({ isOpen, onClose, pdfUrl, handleClosePdfViewer }) => {
+    return (
+        <Modal size={"full"} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader></ModalHeader>
+                <ModalCloseButton size={"lg"} />
+                <ModalBody>
+                    <iframe src={pdfUrl} width="100%" height="500px"></iframe>
+                </ModalBody>
+                <ModalFooter>
+                    <ChakraButton colorScheme="red" size={"lg"} onClick={handleClosePdfViewer}>Close</ChakraButton>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    )
 }

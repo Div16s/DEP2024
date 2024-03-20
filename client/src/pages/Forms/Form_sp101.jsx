@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Form_sp101.css";
+import './Form_sp101.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ContextFormSP101Data from "../../Context/ContextFormSP101Data";
@@ -127,32 +127,15 @@ const Form_sp101 = () => {
         if (response.status === 200) {
           toast.success(response.data.message);
 
-          // setBudgetHead("");
-          // setSanctionedBudget("");
-          // setApproxCost("");
-          // setItems("");
-          // setCategory("");
-          // setBudgetaryApprovalEnclosed("");
-          // setReadyForInstallation("");
-          // setGoodForResearchPurpose("");
-          // setGEM("");
-          // setModeOfEnquiry("");
-          // setNameOfSupplier("");
-          // setNumberOfQuotation("");
-          // setQuotationNumber("");
-          // setModeOfPayment("");
-          // setDeliveryPeriod("");
-
         } else {
           toast.error(response.response.data.err);
         }
       } catch (error) {
-        toast.error("An unexpected error occurred.");
+        toast.error(error.message);
       } finally {
-        setLoading(false); // Reset button state here
+        setLoading(false);
       }
     }
-
   }
 
 
@@ -697,17 +680,17 @@ const Form_sp101 = () => {
                   {/* / end col */}
                 </div>
               </section>
-              <section className="text-right">
-                <Button
+              <section className="flex justify-end">
+                {/* <Button
                   type="button"
                   className="bg-blue-500 text-lg btn-sm next"
                   onClick={handleDownloadPDF}
                 >
                   Download PDF
-                </Button>
+                </Button> */}
                 <Button
                   type="button"
-                  className="bg-green-500 text-lg btn-sm hover:bg-green-700 ml-4 next"
+                  className="bg-green-500 text-lg hover:bg-green-700"
                   loading={loading}
                   onClick={handleSubmit}
                 >
