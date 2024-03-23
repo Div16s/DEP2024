@@ -11,7 +11,23 @@ function SP_101({ formData }) {
     const department = user.department;
     const imageUrl = user.signatureFile;
 
+
+
+
+
+    //values to be obtained frompurchase section
+    let startPageNo= 1;
+    let endPageNo = 1;
+    let rsInValue = 4000;
+    let rsInWords = "four thousand";
    
+
+     //values to be obtained from budget section
+    let  budgetHead = "budget head";
+    let  sanctionedBudget = 3000;
+    let  budgetAvailable = 40000;
+    let  budgetBooked = 20000;
+    let  balanceBudget = 4000;
 
     let bool = 1;
     if (bool === 0) return;
@@ -352,6 +368,7 @@ function SP_101({ formData }) {
     ypos += 5
     doc.text("Budget Sanctioned", 21, ypos + 4)
     doc.setFont('times', 'normal')
+    doc.text(`${sanctionedBudget}`, 120, ypos+4, { align: 'left' })
 
     doc.line(19, ypos + 5, pageWidth - 19, ypos + 5)
     doc.line(75, ypos, 75, ypos + 40)
@@ -359,12 +376,14 @@ function SP_101({ formData }) {
     doc.setFont('times', 'bold')
     doc.text("Budget Available", 21, ypos + 4)
     doc.setFont('times', 'normal')
+    doc.text(`${budgetAvailable}`, 120, ypos+4, { align: 'left' })
 
     doc.line(19, ypos + 5, pageWidth - 19, ypos + 5)
     ypos += 5
     doc.setFont('times', 'bold')
     doc.text("Budget Booked", 21, ypos + 4)
     doc.setFont('times', 'normal')
+    doc.text(`${budgetBooked}`, 90, ypos+4, { align: 'left' })
 
     doc.line(19, ypos + 5, pageWidth - 19, ypos + 5)
     doc.line(130, ypos, 130, ypos + 5)
@@ -372,6 +391,7 @@ function SP_101({ formData }) {
     doc.setFont('times', 'bold')
     doc.text("Budget Head", 132, ypos + 4)
     doc.setFont('times', 'normal')
+    doc.text(`${budgetHead}`, 160, ypos+4, { align: 'left' })
     doc.setFontSize(8)
 
     doc.setFontSize(10)
@@ -379,16 +399,21 @@ function SP_101({ formData }) {
     doc.setFont('times', 'bold')
     doc.text("Balance Budget", 21, ypos + 4)
     doc.setFont('times', 'normal')
+    doc.text(`${balanceBudget}`, 90, ypos+4, { align: 'left' })
+   
 
     doc.line(19, ypos + 5, pageWidth - 19, ypos + 5)
     doc.line(130, ypos + 5, 130, ypos + 25)
+    doc.text("here is the signature of accountant", 20, ypos+18, { align: 'left' })
     ypos += 5
     doc.line(19, ypos + 20, pageWidth - 19, ypos + 20)
     doc.setFont('times', 'bold')
     doc.text("Accountant/JAO", 21, ypos + 19)
 
+    
+    doc.text("here is the signature of AO", 95, ypos+12, { align: 'center' })
     doc.text("AO", 100, ypos + 19)
-
+    doc.text("signature of AR/JR/DR, Accounts", pageWidth - 55, ypos+13, { align: 'center' })
     doc.text("AR/JR/DR, Accounts", pageWidth - 55, ypos + 19)
 
     doc.addPage()
@@ -399,18 +424,20 @@ function SP_101({ formData }) {
 
     doc.setFont('times', 'normal')
     doc.text("Quotation signed by all the committee members. Calculations indicated above have been checked and found in order.", 23, 20, { maxWidth: pageWidth - 37 })
-    doc.text("Purchase proposal (Page no.______to_______) is in order. The Competent Financial Authority (CFA) may kindly", 23, 26, { maxWidth: pageWidth - 37 })
-    doc.text("accord financial sanction to the extent of Rs. ________________(Rupees _____________________________only)", 23, 32, { maxWidth: pageWidth - 37 })
+    doc.text(`Purchase proposal (Page no. ${startPageNo}  to  ${endPageNo}) is in order. The Competent Financial Authority (CFA) may kindly`, 23, 26, { maxWidth: pageWidth - 37 })
+    doc.text(`accord financial sanction to the extent of Rs. ${rsInValue}(Rupees ${rsInWords} only)`, 23, 32, { maxWidth: pageWidth - 37 })
     doc.text("for the above purchase.", 23, 38, { maxWidth: pageWidth - 37 })
 
-
+    doc.text("js /supdt sign here", 23, 50, )
     doc.setFont('times', 'bold')
     doc.text('J.S./Supdt (P)', 23, 60)
+    doc.text("AR/DR/JR sign here", pageWidth - 55, 50, )
     doc.text('AR/DR/JR', pageWidth - 39, 60)
     doc.text('Recommended/Not Recommended', 23, 70)
     doc.text('Approved/Not Approved', pageWidth - 60, 70)
-
+    doc.text("REGISTRAR sign here", 23, 90, )
     doc.text('REGISTRAR', 23, 100)
+    doc.text("REGISTRAR sign here", pageWidth - 45, 90, )
     doc.text('HOD', pageWidth - 31, 100)
 
 
