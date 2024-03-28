@@ -86,6 +86,8 @@ const verifyOTP_userSignup = async (req, res) => {
     else if (department === "Chemical Engineering") department = "CH";
     else if (department === "Physics Department") department = "PH";
     else if (department === "Biomedical Engineering") department = "BME";
+    else if (department === "ACCOUNTS") department = "ACC";
+    else if (department === "PURCHASE") department = "PUR";
     if (!otp) {
         res.status(404).json({
             error: "Enter your OTP"

@@ -206,6 +206,21 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
+                        onClick={() => handleRoleSelection("ACCOUNTANT")}
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        ACCOUNTANT
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
                         onClick={() => handleRoleSelection("JAO")}
                         className={classNames(
                           active
@@ -236,6 +251,21 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
+                        onClick={() => handleRoleSelection("AR")}
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        AR
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
                         onClick={() => handleRoleSelection("JR")}
                         className={classNames(
                           active
@@ -251,6 +281,21 @@ const Register = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <a
+                        onClick={() => handleRoleSelection("DR")}
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block px-4 py-2 text-sm"
+                        )}
+                      >
+                        DR
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
                         onClick={() => handleRoleSelection("JS")}
                         className={classNames(
                           active
@@ -260,21 +305,6 @@ const Register = () => {
                         )}
                       >
                         JS
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() => handleRoleSelection("ACCOUNTS")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        ACCOUNTS
                       </a>
                     )}
                   </Menu.Item>
@@ -306,21 +336,6 @@ const Register = () => {
                         )}
                       >
                         REGISTRAR
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        onClick={() => handleRoleSelection("JAO")}
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
-                      >
-                        JAO
                       </a>
                     )}
                   </Menu.Item>
@@ -529,6 +544,82 @@ const Register = () => {
                             )}
                           >
                             Others
+                          </a>
+                        )}
+                      </Menu.Item>
+                    </div>
+                  </Menu.Items>
+                </Transition>
+              </Menu> : <div></div>
+          }
+          {
+            (selectedRole === "JAO" || selectedRole === "AO"|| selectedRole==="JR"||selectedRole==="ACCOUNTANT"||selectedRole==="AR"||selectedRole==="DR"||selectedRole==="JS"||selectedRole==="REGISTRAR") ?
+
+
+              <Menu
+                as="div"
+                className="relative inline-block text-left w-full py-2"
+              >
+                <label
+                  for="department"
+                  className="bock -ml-1 text-2xl font-semibold text-gray-600"
+                >
+                  Department
+                </label>
+                <div>
+                  <Menu.Button className="inline-flex justify-between mt-1 p-2 w-full text-lg border focus:outline-zinc-400 outline outline-1 outline-zinc-300 rounded-md bg-white px-2 py-2  hover:bg-gray-100">
+                    {selectedDept || "Select Your  Department"}
+                    {!selectedDept && (
+                      <ChevronDownIcon
+                        className="mr-2  h-7 w-5 font-bold text-gray-600"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </Menu.Button>
+                </div>
+
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute  right-0 z-10 mt-2 w-56 origin-bottom-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-60 overflow-y-auto">
+                    <div className="py-1">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("PURCHASE")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            PURCHASE
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            onClick={() =>
+                              handleDeptSelection("ACCOUNTS")
+                            }
+                            className={classNames(
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
+                            )}
+                          >
+                            ACCOUNTS
                           </a>
                         )}
                       </Menu.Item>

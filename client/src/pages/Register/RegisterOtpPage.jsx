@@ -12,8 +12,8 @@ const RegisterOtpPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    console.log("Role: ",location.state.name);
-    console.log("Role: ",location.state.email);
+    console.log("Name: ",location.state.name);
+    console.log("Email: ",location.state.email);
     console.log("Role: ",location.state.role);
     console.log("Department: ",location.state.department);
 

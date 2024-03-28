@@ -28,7 +28,7 @@ function StickyNavbar() {
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
     setIsAuthenticated(false);
-    navigate("/login");
+    navigate("/");
   };
 
   React.useEffect(() => {

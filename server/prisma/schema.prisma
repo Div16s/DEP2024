@@ -32,6 +32,8 @@ enum Department {
   CE
   BME
   PH
+  ACC
+  PUR
 }
 
 // User model representing all types of users
